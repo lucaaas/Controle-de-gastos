@@ -2,11 +2,13 @@ import 'package:controlegastos/helpers/db_helper.dart';
 import 'package:controlegastos/models/cartao_credito.dart';
 import 'package:controlegastos/providers/connections/connection.dart';
 
+import 'connection.dart';
+
 class CartaoCreditoConnection extends Connection {
   final String tabela = 'entrada';
 
   @override
-  Future<Map> atualizar(CartaoCredito cartaoCredito) async {
+  Future<Mensagem> atualizar(CartaoCredito cartaoCredito) async {
     try {
       int idCartaoCredito = await DBHelper.update(
           tabela,
@@ -17,67 +19,68 @@ class CartaoCreditoConnection extends Connection {
           'id = ?',
           [cartaoCredito.id]);
 
-      final resultado = {
-        'tipo': 'info',
-        'message': 'Cartão de crédito atualizado',
-        'id': idCartaoCredito
-      };
+      final Mensagem mensagem = new Mensagem(
+        tipo: 'info',
+        mensagem: 'Cartão de crédito atualizado',
+        id: idCartaoCredito,
+      );
 
-      return resultado;
+      return mensagem;
     } catch (e) {
-      final resultado = {
-        'tipo': 'erro',
-        'message': 'Não foi possível atualizar cartão de crédito: $e',
-      };
+      final Mensagem mensagem = new Mensagem(
+        tipo: 'erro',
+        mensagem: 'Não foi possível atualizar cartão de crédito: $e',
+      );
 
-      return resultado;
+      return mensagem;
     }
   }
 
   @override
-  Future<Map> inserir(CartaoCredito cartaoCredito) async {
+  Future<Mensagem> inserir(CartaoCredito cartaoCredito) async {
     try {
       int idCartaoCredito = await DBHelper.insert(tabela, {
         'nome': cartaoCredito.nome,
         'valor': cartaoCredito.cor,
       });
 
-      final resultado = {
-        'tipo': 'info',
-        'message': 'Novo cartão de crédito inserido',
-        'id': idCartaoCredito
-      };
+      final Mensagem mensagem = new Mensagem(
+        tipo: 'info',
+        mensagem: 'Novo cartão de crédito inserido',
+        id: idCartaoCredito,
+      );
 
-      return resultado;
+      return mensagem;
     } catch (e) {
-      final resultado = {
-        'tipo': 'erro',
-        'message': 'Não foi possível criar novo cartão de crédito: $e',
-      };
+      final Mensagem mensagem = new Mensagem(
+        tipo: 'erro',
+        mensagem: 'Não foi possível criar novo cartão de crédito: $e',
+      );
 
-      return resultado;
+      return mensagem;
     }
   }
 
   @override
-  Future<Map> delete(CartaoCredito cartaoCredito) async {
+  Future<Mensagem> delete(CartaoCredito cartaoCredito) async {
     try {
-      int idCartaoCredito = await DBHelper.delete(tabela, 'id = ?', [cartaoCredito.id]);
+      int idCartaoCredito =
+          await DBHelper.delete(tabela, 'id = ?', [cartaoCredito.id]);
 
-      final resultado = {
-        'tipo': 'info',
-        'message': 'Cartão de crédito deletado',
-        'id': idCartaoCredito
-      };
+      final Mensagem mensagem = new Mensagem(
+        tipo: 'info',
+        mensagem: 'Cartão de crédito deletado',
+        id: idCartaoCredito,
+      );
 
-      return resultado;
+      return mensagem;
     } catch (e) {
-      final resultado = {
-        'tipo': 'erro',
-        'message': 'Não foi possível deletar cartão de crédito: $e',
-      };
+      final Mensagem mensagem = new Mensagem(
+        tipo: 'erro',
+        mensagem: 'Não foi possível deletar cartão de crédito: $e',
+      );
 
-      return resultado;
+      return mensagem;
     }
   }
 }

@@ -6,7 +6,7 @@ class SaidaConnection extends Connection {
   final String tabela = 'saida';
 
   @override
-  Future<Map> atualizar(Saida saida) async {
+  Future<Mensagem> atualizar(Saida saida) async {
     try {
       int idSaida = await DBHelper.update(
           tabela,
@@ -19,25 +19,25 @@ class SaidaConnection extends Connection {
           'id = ?',
           [saida.id]);
 
-      final resultado = {
-        'tipo': 'info',
-        'message': 'Saída atualizada',
-        'id': idSaida
-      };
+      final mensagem = new Mensagem(
+        tipo: 'info',
+        mensagem: 'Saída atualizada',
+        id: idSaida,
+      );
 
-      return resultado;
+      return mensagem;
     } catch (e) {
-      final resultado = {
-        'tipo': 'erro',
-        'message': 'Não foi possível atualizar nova saída: $e',
-      };
+      final mensagem = new Mensagem(
+        tipo: 'erro',
+        mensagem: 'Não foi possível atualizar nova saída: $e',
+      );
 
-      return resultado;
+      return mensagem;
     }
   }
 
   @override
-  Future<Map> inserir(Saida saida) async {
+  Future<Mensagem> inserir(Saida saida) async {
     try {
       int idSaida = await DBHelper.insert(tabela, {
         'descricao': saida.descricao,
@@ -46,42 +46,42 @@ class SaidaConnection extends Connection {
         'cartao_credito': saida.cartaoCredito.id,
       });
 
-      final resultado = {
-        'tipo': 'info',
-        'message': 'Nova saída inserida',
-        'id': idSaida
-      };
+      final mensagem = new Mensagem(
+        tipo: 'info',
+        mensagem: 'Nova saída inserida',
+        id: idSaida,
+      );
 
-      return resultado;
+      return mensagem;
     } catch (e) {
-      final resultado = {
-        'tipo': 'erro',
-        'message': 'Não foi possível criar nova saída: $e',
-      };
+      final mensagem = new Mensagem(
+        tipo: 'erro',
+        mensagem: 'Não foi possível criar nova saída: $e',
+      );
 
-      return resultado;
+      return mensagem;
     }
   }
 
   @override
-  Future<Map> delete(Saida saida) async {
+  Future<Mensagem> delete(Saida saida) async {
     try {
       int idSaida = await DBHelper.delete(tabela, 'id = ?', [saida.id]);
 
-      final resultado = {
-        'tipo': 'info',
-        'message': 'Saída deletada',
-        'id': idSaida
-      };
+      final mensagem = new Mensagem(
+        tipo: 'info',
+        mensagem: 'Saída deletada',
+        id: idSaida,
+      );
 
-      return resultado;
+      return mensagem;
     } catch (e) {
-      final resultado = {
-        'tipo': 'erro',
-        'message': 'Não foi possível deletar saída: $e',
-      };
+      final mensagem = new Mensagem(
+        tipo: 'erro',
+        mensagem: 'Não foi possível deletar saída: $e',
+      );
 
-      return resultado;
+      return mensagem;
     }
   }
 }

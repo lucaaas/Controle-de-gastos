@@ -2,11 +2,13 @@ import 'package:controlegastos/helpers/db_helper.dart';
 import 'package:controlegastos/models/categoria.dart';
 import 'package:controlegastos/providers/connections/connection.dart';
 
+import 'connection.dart';
+
 class CategoriaConnection extends Connection {
   final String tabela = 'entrada';
 
   @override
-  Future<Map> atualizar(Categoria categoria) async {
+  Future<Mensagem> atualizar(Categoria categoria) async {
     try {
       int idCategoria = await DBHelper.update(
           tabela,
@@ -18,25 +20,22 @@ class CategoriaConnection extends Connection {
           'id = ?',
           [categoria.id]);
 
-      final resultado = {
-        'tipo': 'info',
-        'message': 'Categoria atualizada',
-        'id': idCategoria
-      };
+      final Mensagem mensagem = new Mensagem(
+          tipo: 'info', mensagem: 'Categoria atualizada', id: idCategoria);
 
-      return resultado;
+      return mensagem;
     } catch (e) {
-      final resultado = {
-        'tipo': 'erro',
-        'message': 'Não foi possível atualizar categoria: $e',
-      };
+      final Mensagem mensagem = new Mensagem(
+        tipo: 'erro',
+        mensagem: 'Não foi possível atualizar categoria: $e',
+      );
 
-      return resultado;
+      return mensagem;
     }
   }
 
   @override
-  Future<Map> inserir(Categoria categoria) async {
+  Future<Mensagem> inserir(Categoria categoria) async {
     try {
       int idCategoria = await DBHelper.insert(tabela, {
         'nome': categoria.nome,
@@ -44,42 +43,39 @@ class CategoriaConnection extends Connection {
         'descricao': categoria.descricao
       });
 
-      final resultado = {
-        'tipo': 'info',
-        'message': 'Nova categoria inserida',
-        'id': idCategoria
-      };
+      final Mensagem mensagem = new Mensagem(
+          tipo: 'info', mensagem: 'Nova categoria inserida', id: idCategoria);
 
-      return resultado;
+      return mensagem;
     } catch (e) {
-      final resultado = {
-        'tipo': 'erro',
-        'message': 'Não foi possível criar nova categoria: $e',
-      };
+      final Mensagem mensagem = new Mensagem(
+        tipo: 'erro',
+        mensagem: 'Não foi possível criar nova categoria: $e',
+      );
 
-      return resultado;
+      return mensagem;
     }
   }
 
   @override
-  Future<Map> delete(Categoria categoria) async {
+  Future<Mensagem> delete(Categoria categoria) async {
     try {
       int idCategoria = await DBHelper.delete(tabela, 'id = ?', [categoria.id]);
 
-      final resultado = {
-        'tipo': 'info',
-        'message': 'Categoria deletada',
-        'id': idCategoria
-      };
+      final Mensagem mensagem = new Mensagem(
+        tipo: 'info',
+        mensagem: 'Categoria deletada',
+        id: idCategoria,
+      );
 
-      return resultado;
+      return mensagem;
     } catch (e) {
-      final resultado = {
-        'tipo': 'erro',
-        'message': 'Não foi possível deletar categoria: $e',
-      };
+      final Mensagem mensagem = new Mensagem(
+        tipo: 'erro',
+        mensagem: 'Não foi possível deletar categoria: $e',
+      );
 
-      return resultado;
+      return mensagem;
     }
   }
 }

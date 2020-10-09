@@ -11,7 +11,26 @@ abstract class Connection {
     }
   }
 
-  Future<Map> inserir(@checked Model model);
-  Future<Map> atualizar(@checked Model model);
-  Future<Map> delete(@checked Model model);
+  Future<Mensagem> inserir(covariant Model model);
+
+  Future<Mensagem> atualizar(covariant Model model);
+
+  Future<Mensagem> delete(covariant Model model);
+}
+
+class Mensagem {
+  int _id;
+  String _tipo;
+  String _mensagem;
+
+  Mensagem({int id, String tipo, String mensagem})
+      : _id = id,
+        _tipo = tipo,
+        _mensagem = mensagem;
+
+  int get id => _id;
+
+  String get tipo => _tipo;
+
+  String get mensagem => _mensagem;
 }
