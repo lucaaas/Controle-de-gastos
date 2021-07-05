@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-
 import 'model.dart';
 
 class Categoria extends Model {

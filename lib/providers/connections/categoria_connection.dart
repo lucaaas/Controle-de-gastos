@@ -1,5 +1,6 @@
 import 'package:controlegastos/helpers/db_helper.dart';
 import 'package:controlegastos/models/categoria.dart';
+import 'package:controlegastos/models/model.dart';
 import 'package:controlegastos/providers/connections/connection.dart';
 
 import 'connection.dart';
@@ -14,7 +15,7 @@ class CategoriaConnection extends Connection {
           tabela,
           {
             'nome': categoria.nome,
-            'valor': categoria.cor,
+            'cor': categoria.cor,
             'descricao': categoria.descricao
           },
           'id = ?',
@@ -39,7 +40,7 @@ class CategoriaConnection extends Connection {
     try {
       int idCategoria = await DBHelper.insert(tabela, {
         'nome': categoria.nome,
-        'valor': categoria.cor,
+        'cor': categoria.cor,
         'descricao': categoria.descricao
       });
 
@@ -77,5 +78,17 @@ class CategoriaConnection extends Connection {
 
       return mensagem;
     }
+  }
+
+  @override
+  Future<Model> get(int id) {
+    // TODO: implement get
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<Model>> getAll() {
+    // TODO: implement getAll
+    throw UnimplementedError();
   }
 }

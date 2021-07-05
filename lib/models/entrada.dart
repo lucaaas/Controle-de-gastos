@@ -6,7 +6,7 @@ class Entrada extends Model {
   final double _valor;
   DateTime _data;
   List<Categoria> _categorias;
-
+ 
   Entrada(int id, this._descricao, this._valor,
       {DateTime data, List<Categoria> categorias})
       : super(id) {

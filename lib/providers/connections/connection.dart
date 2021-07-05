@@ -1,6 +1,4 @@
 import 'package:controlegastos/models/model.dart';
-import 'package:controlegastos/models/saida.dart';
-import 'package:meta/meta.dart';
 
 abstract class Connection {
   Future save(Model model) async {
@@ -16,6 +14,10 @@ abstract class Connection {
   Future<Mensagem> atualizar(covariant Model model);
 
   Future<Mensagem> delete(covariant Model model);
+
+  Future<Model> get(int id);
+
+  Future<List<Model>> getAll();
 }
 
 class Mensagem {
