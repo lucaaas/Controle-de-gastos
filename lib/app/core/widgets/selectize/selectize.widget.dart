@@ -109,7 +109,7 @@ class _SelectizeState extends State<Selectize> {
           TypeAheadField(
             suggestionsCallback: (pattern) => ['item 1', 'item 2', 'item 3']
                 .takeWhile((value) => value.contains(pattern)),
-            itemBuilder: (context, itemData) => ListTile(
+            itemBuilder: (context, dynamic itemData) => ListTile(
               leading: Icon(Icons.add),
               title: Text(itemData),
             ),

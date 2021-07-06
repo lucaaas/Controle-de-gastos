@@ -1,4 +1,4 @@
-import 'package:controlegastos/models/model.dart';
+import 'package:controlegastos/app/core/models/model.dart';
 
 abstract class Connection {
   Future save(Model model) async {
@@ -21,18 +21,18 @@ abstract class Connection {
 }
 
 class Mensagem {
-  int _id;
-  String _tipo;
-  String _mensagem;
+  int? _id;
+  String? _tipo;
+  String? _mensagem;
 
-  Mensagem({int id, String tipo, String mensagem})
+  Mensagem({int? id, String? tipo, String? mensagem})
       : _id = id,
         _tipo = tipo,
         _mensagem = mensagem;
 
-  int get id => _id;
+  int? get id => _id;
 
-  String get tipo => _tipo;
+  String? get tipo => _tipo;
 
-  String get mensagem => _mensagem;
+  String? get mensagem => _mensagem;
 }

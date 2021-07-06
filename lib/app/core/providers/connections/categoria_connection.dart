@@ -1,7 +1,6 @@
-import 'package:controlegastos/helpers/db_helper.dart';
-import 'package:controlegastos/models/categoria.dart';
-import 'package:controlegastos/models/model.dart';
-import 'package:controlegastos/providers/connections/connection.dart';
+import 'package:controlegastos/app/core/helpers/db_helper.dart';
+import 'package:controlegastos/app/core/models/categoria.dart';
+import 'package:controlegastos/app/core/models/model.dart';
 
 import 'connection.dart';
 

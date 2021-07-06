@@ -1,7 +1,8 @@
-import 'package:controlegastos/helpers/db_helper.dart';
-import 'package:controlegastos/models/model.dart';
-import 'package:controlegastos/models/saida.dart';
-import 'package:controlegastos/providers/connections/connection.dart';
+import 'package:controlegastos/app/core/helpers/db_helper.dart';
+import 'package:controlegastos/app/core/models/model.dart';
+import 'package:controlegastos/app/core/models/saida.dart';
+import 'package:controlegastos/app/core/providers/connections/connection.dart';
+
 
 class SaidaConnection extends Connection {
   final String tabela = 'saida';
@@ -15,7 +16,7 @@ class SaidaConnection extends Connection {
             'descricao': saida.descricao,
             'valor': saida.valor,
             'data': saida.data.toString(),
-            'cartao_credito': saida.cartaoCredito.id,
+            'cartao_credito': saida.cartaoCredito!.id,
           },
           'id = ?',
           [saida.id]);
@@ -44,7 +45,7 @@ class SaidaConnection extends Connection {
         'descricao': saida.descricao,
         'valor': saida.valor,
         'data': saida.data.toString(),
-        'cartao_credito': saida.cartaoCredito.id,
+        'cartao_credito': saida.cartaoCredito!.id,
       });
 
       final mensagem = new Mensagem(

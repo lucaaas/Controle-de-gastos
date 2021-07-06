@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class NewEntradaController {
   Future<String> openDatePicker(BuildContext context) async {
-    DateTime dataSelecionada = await showDatePicker(
+    DateTime? dataSelecionada = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(DateTime.now().year - 1),

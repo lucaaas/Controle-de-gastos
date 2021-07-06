@@ -1,5 +1,5 @@
-import 'package:controlegastos/widgets/form_popup/form_popup.widget.dart';
-import 'package:controlegastos/widgets/selectize/selectize.widget.dart';
+import 'package:controlegastos/app/core/widgets/form_popup/form_popup.widget.dart';
+import 'package:controlegastos/app/core/widgets/selectize/selectize.widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -50,7 +50,7 @@ class _NewEntradaPageState extends State<NewEntradaPage> {
               RaisedButton(
                 child: Text('Salvar'),
                 color: Theme.of(context).primaryColor,
-                textColor: Theme.of(context).textTheme.button.color,
+                textColor: Theme.of(context).textTheme.button!.color,
                 onPressed: () => print('salvar'),
               ),
             ],

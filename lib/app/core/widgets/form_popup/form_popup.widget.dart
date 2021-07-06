@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class FormPopUpWidget extends StatelessWidget {
-  final List<Widget> _fields;
+  final List<Widget>? _fields;
 
-  const FormPopUpWidget({List<Widget> fields, Key key})
+  const FormPopUpWidget({List<Widget>? fields, Key? key})
       : _fields = fields,
         super(key: key);
 
@@ -18,7 +18,7 @@ class FormPopUpWidget extends StatelessWidget {
             padding: EdgeInsets.all(4.0),
             child: SingleChildScrollView(
               child: Column(
-                children: _fields,
+                children: _fields!,
               ),
             ),
           ),
