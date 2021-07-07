@@ -18,6 +18,12 @@ class AppConfigModel {
     ),
   );
 
+  // form
+  final textFieldMargin = EdgeInsets.symmetric(
+    vertical: 25.0,
+    horizontal: 15.0,
+  );
+
   // stuff
   final VisualDensity visualDensity = VisualDensity.adaptivePlatformDensity;
 }

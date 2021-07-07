@@ -1,7 +1,17 @@
+import 'package:controlegastos/app/core/models/appconfig_model.dart';
 import 'package:flutter/material.dart';
 
 class NewEntradaController {
-  Future<String> openDatePicker(BuildContext context) async {
+  final AppConfigModel appConfigModel;
+
+  final ValueNotifier<List<String>> itensLista = ValueNotifier([]);
+  final TextEditingController descricao = TextEditingController();
+  final TextEditingController valor = TextEditingController();
+  final TextEditingController data = TextEditingController();
+
+  NewEntradaController(this.appConfigModel);
+
+  Future<void> openDatePicker(BuildContext context) async {
     DateTime? dataSelecionada = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -10,9 +20,20 @@ class NewEntradaController {
     );
 
     if (dataSelecionada != null) {
-      return '${dataSelecionada.day}/${dataSelecionada.month}/${dataSelecionada.year}';
+      data.text = '${dataSelecionada.day}/${dataSelecionada.month}/${dataSelecionada.year}';
     } else {
-      return '';
+      data.text = '';
     }
+  }
+
+  void addItemLista(String item) {
+    if (!itensLista.value.contains(item)) {
+      itensLista.value.add(item);
+    }
+  }
+
+  bool removeItemLista(int index) {
+    itensLista.value.removeAt(index);
+    return true;
   }
 }
