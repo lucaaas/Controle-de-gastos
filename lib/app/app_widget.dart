@@ -1,5 +1,4 @@
 import 'package:controlegastos/app/app_controller.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 

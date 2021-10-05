@@ -1,7 +1,7 @@
 import 'package:controlegastos/app/core/widgets/form_popup/form_popup.widget.dart';
 import 'package:controlegastos/app/core/widgets/selectize/selectize.widget.dart';
+import 'package:controlegastos/app/core/widgets/tag_selectize/tag_selectize_widget.dart';
 import 'package:controlegastos/app/core/widgets/text_field/text_field_widget.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -40,22 +40,25 @@ class _NewEntradaPageState extends State<NewEntradaPage> {
             readOnly: true,
             onTap: () => _controller.openDatePicker(context),
           ),
-          ValueListenableBuilder(
-            valueListenable: _controller.itensLista,
-            builder: (context, List<String> value, child) => Selectize(
-              itensLista: value,
-              margin: _controller.appConfigModel.margin,
-              onAdd: _controller.addItemLista,
-              onRemove: _controller.removeItemLista,
-            ),
+          TagSelectizeWidget(
+            items: _controller.categorias,
+            itemBuilder: _controller.itemBuilder,
+            buildTag: _controller.buildTag,
+            suggestionsCallback: _controller.suggestionsCallback,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               RaisedButton(
                 child: Text('Salvar'),
-                color: Theme.of(context).primaryColor,
-                textColor: Theme.of(context).textTheme.button!.color,
+                color: Theme
+                    .of(context)
+                    .primaryColor,
+                textColor: Theme
+                    .of(context)
+                    .textTheme
+                    .button!
+                    .color,
                 onPressed: () => print('salvar'),
               ),
             ],

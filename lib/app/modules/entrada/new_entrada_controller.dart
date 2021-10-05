@@ -1,15 +1,22 @@
+import 'dart:async';
+
 import 'package:controlegastos/app/core/models/appconfig_model.dart';
+import 'package:controlegastos/app/core/models/categoria.dart';
+import 'package:controlegastos/app/core/providers/connections/categoria_connection.dart';
+import 'package:controlegastos/app/core/widgets/tag/tag_widget.dart';
 import 'package:flutter/material.dart';
 
 class NewEntradaController {
   final AppConfigModel appConfigModel;
 
-  final ValueNotifier<List<String>> itensLista = ValueNotifier([]);
+  final List<Categoria> categorias = [];
   final TextEditingController descricao = TextEditingController();
   final TextEditingController valor = TextEditingController();
   final TextEditingController data = TextEditingController();
 
-  NewEntradaController(this.appConfigModel);
+  final CategoriaConnection _categoriaConnection;
+
+  NewEntradaController(this.appConfigModel, this._categoriaConnection);
 
   Future<void> openDatePicker(BuildContext context) async {
     DateTime? dataSelecionada = await showDatePicker(
@@ -26,14 +33,23 @@ class NewEntradaController {
     }
   }
 
-  void addItemLista(String item) {
-    if (!itensLista.value.contains(item)) {
-      itensLista.value.add(item);
-    }
+  Widget itemBuilder(BuildContext context, Categoria categoria) {
+    return ListTile(
+      title: Text(categoria.nome),
+      subtitle: Text(categoria.descricao),
+      leading: Icon(Icons.add),
+    );
   }
 
-  bool removeItemLista(int index) {
-    itensLista.value.removeAt(index);
-    return true;
+  TagWidget buildTag(Categoria categoria) {
+    return TagWidget(
+      text: categoria.nome,
+      color: Color(categoria.cor),
+      onDeleted: () => categorias.remove(categoria),
+    );
+  }
+
+  FutureOr<Iterable<Categoria>> suggestionsCallback(String text) async {
+    return _categoriaConnection.
   }
 }
