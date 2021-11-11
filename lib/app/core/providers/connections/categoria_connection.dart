@@ -1,93 +1,56 @@
 import 'package:controlegastos/app/core/helpers/db_helper.dart';
-import 'package:controlegastos/app/core/models/categoria.dart';
-import 'package:controlegastos/app/core/models/model.dart';
+import 'package:controlegastos/app/core/models/categoria_model.dart';
+import 'package:controlegastos/app/core/types/MessageType.dart';
 
-import 'connection.dart';
+import 'baseconnector.dart';
 
-class CategoriaConnection extends Connection {
-  final String tabela = 'entrada';
+class CategoriaConnection extends BaseConnector {
+  DBHelper _dbHelper;
+
+  CategoriaConnection(this._dbHelper);
 
   @override
-  Future<Mensagem> atualizar(Categoria categoria) async {
+  Future<CategoriaModel> get(int id) async {
     try {
-      int idCategoria = await DBHelper.update(
-          tabela,
-          {
-            'nome': categoria.nome,
-            'cor': categoria.cor,
-            'descricao': categoria.descricao
-          },
-          'id = ?',
-          [categoria.id]);
-
-      final Mensagem mensagem = new Mensagem(
-          tipo: 'info', mensagem: 'Categoria atualizada', id: idCategoria);
-
-      return mensagem;
-    } catch (e) {
-      final Mensagem mensagem = new Mensagem(
-        tipo: 'erro',
-        mensagem: 'Não foi possível atualizar categoria: $e',
+      Map<String, dynamic> data =
+          await database.getDataById(table: table, id: id);
+      return CategoriaModel.fromJson(data);
+    } catch (e, stacktrace) {
+      throw Exception(
+        MessageType(
+          level: MessageLevel.ERROR,
+          message: 'Não foi possível recuperar registro de $table: $e',
+          data: {'stacktrace': stacktrace},
+        ),
       );
-
-      return mensagem;
     }
   }
 
   @override
-  Future<Mensagem> inserir(Categoria categoria) async {
+  Future<List<CategoriaModel>> getAll() async {
     try {
-      int idCategoria = await DBHelper.insert(tabela, {
-        'nome': categoria.nome,
-        'cor': categoria.cor,
-        'descricao': categoria.descricao
-      });
+      List<Map<String, dynamic>> rows = await database.getData(table: table);
 
-      final Mensagem mensagem = new Mensagem(
-          tipo: 'info', mensagem: 'Nova categoria inserida', id: idCategoria);
+      List<CategoriaModel> data = [];
+      for (Map<String, dynamic> row in rows) {
+        data.add(CategoriaModel.fromJson(row));
+      }
 
-      return mensagem;
-    } catch (e) {
-      final Mensagem mensagem = new Mensagem(
-        tipo: 'erro',
-        mensagem: 'Não foi possível criar nova categoria: $e',
+      return data;
+    } catch (e, stacktrace) {
+      throw Exception(
+        MessageType(
+          level: MessageLevel.ERROR,
+          message: 'Não foi possível recuperar registro de $table: $e',
+          data: {'stacktrace': stacktrace},
+        ),
       );
-
-      return mensagem;
     }
   }
 
   @override
-  Future<Mensagem> delete(Categoria categoria) async {
-    try {
-      int idCategoria = await DBHelper.delete(tabela, 'id = ?', [categoria.id]);
-
-      final Mensagem mensagem = new Mensagem(
-        tipo: 'info',
-        mensagem: 'Categoria deletada',
-        id: idCategoria,
-      );
-
-      return mensagem;
-    } catch (e) {
-      final Mensagem mensagem = new Mensagem(
-        tipo: 'erro',
-        mensagem: 'Não foi possível deletar categoria: $e',
-      );
-
-      return mensagem;
-    }
-  }
+  DBHelper get database => _dbHelper;
 
   @override
-  Future<Model> get(int id) {
-    // TODO: implement get
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<List<Model>> getAll() {
-    // TODO: implement getAll
-    throw UnimplementedError();
-  }
+  String get table => 'categoria';
 }
