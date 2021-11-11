@@ -7,7 +7,13 @@ class CartaoCreditoModel extends BaseModel {
   final String nome;
   final Color cor;
 
-  CartaoCreditoModel({int? id, required this.nome,  this.cor = Colors.white}) : super(id: id);
+  CartaoCreditoModel({int? id, required this.nome, this.cor = Colors.white})
+      : super(id: id);
+
+  CartaoCreditoModel.fromJson(Map<String, dynamic> data)
+      : nome = data['nome'],
+        cor = Color(data['cor']),
+        super(id: data['id']);
 
   @override
   Map<String, dynamic> toJson() {

@@ -1,7 +1,7 @@
 import 'categoria_model.dart';
 import 'basemodel.dart';
 
-class EntradaModel extends BaseModel  {
+class EntradaModel extends BaseModel {
   final String descricao;
   final double valor;
   DateTime? data;
@@ -13,7 +13,19 @@ class EntradaModel extends BaseModel  {
     required this.valor,
     DateTime? data,
     List<CategoriaModel>? categorias,
-  }) : super(id: id) ;
+  }) : super(id: id);
+
+  EntradaModel.fromJson(Map<String, dynamic> data)
+      : descricao = data['descricao'],
+        valor = data['valor'],
+        data = DateTime.parse(data['data']),
+        super(id: data['id']) {
+    categorias = [];
+    for(Map<String, dynamic> categoria in data['categorias']) {
+      categorias!.add(CategoriaModel.fromJson(categoria));
+    }
+  }
+
 
   @override
   Map<String, dynamic> toJson() {
@@ -24,7 +36,7 @@ class EntradaModel extends BaseModel  {
     };
 
     List<Map<String, dynamic>> jsonCategorias = [];
-    for(CategoriaModel categoria in categorias!) {
+    for (CategoriaModel categoria in categorias!) {
       jsonCategorias.add(categoria.toJson());
     }
 

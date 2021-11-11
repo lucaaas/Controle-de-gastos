@@ -17,7 +17,22 @@ class SaidaModel extends BaseModel {
     List<CategoriaModel>? categorias,
     CartaoCreditoModel? cartaoCredito,
   }) : super(id: id);
-  
+
+  SaidaModel.fromJson(Map<String, dynamic> data)
+      : descricao = data['descricao'],
+        valor = data['valor'],
+        data = DateTime.parse(data['data']),
+        super(id: data['id']) {
+    categorias = [];
+    for (Map<String, dynamic> categoria in data['categorias']) {
+      categorias!.add(CategoriaModel.fromJson(categoria));
+    }
+
+    if (data.containsKey('cartaoCredito')) {
+      cartaoCredito = CartaoCreditoModel.fromJson(data['cartaoCredito']);
+    }
+  }
+
   @override
   Map<String, dynamic> toJson() {
     Map<String, dynamic> json = {
@@ -28,7 +43,7 @@ class SaidaModel extends BaseModel {
     };
 
     List<Map<String, dynamic>> jsonCategorias = [];
-    for(CategoriaModel categoria in categorias!) {
+    for (CategoriaModel categoria in categorias!) {
       jsonCategorias.add(categoria.toJson());
     }
 

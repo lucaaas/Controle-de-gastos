@@ -14,6 +14,12 @@ class CategoriaModel extends BaseModel {
     this.cor = Colors.white,
   }) : super(id: id);
 
+  CategoriaModel.fromJson(Map<String, dynamic> data)
+      : nome = data['nome'],
+        descricao = data['descricao'],
+        cor = Color(data['color']),
+        super(id: data['id']);
+
   @override
   Map<String, dynamic> toJson() {
     Map<String, dynamic> json = {
