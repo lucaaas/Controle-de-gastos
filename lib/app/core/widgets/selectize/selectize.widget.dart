@@ -4,13 +4,15 @@ import 'package:flutter_tags/flutter_tags.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 class Selectize extends StatefulWidget {
+  const Selectize({Key? key}) : super(key: key);
+
   @override
   _SelectizeState createState() => _SelectizeState();
 }
 
 class _SelectizeState extends State<Selectize> {
-  String _itemSelecionado = '';
-  List<String> _itensLista = [];
+  final String _itemSelecionado = '';
+  final List<String> _itensLista = [];
 
   void _addItemLista(String item) {
     setState(() {
@@ -84,7 +86,7 @@ class _SelectizeState extends State<Selectize> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 25.0, bottom: 20.0),
+      margin: const EdgeInsets.only(top: 25.0, bottom: 20.0),
       child: Column(
         children: [
           Tags(
@@ -110,17 +112,17 @@ class _SelectizeState extends State<Selectize> {
             suggestionsCallback: (pattern) => ['item 1', 'item 2', 'item 3']
                 .takeWhile((value) => value.contains(pattern)),
             itemBuilder: (context, dynamic itemData) => ListTile(
-              leading: Icon(Icons.add),
+              leading: const Icon(Icons.add),
               title: Text(itemData),
             ),
             onSuggestionSelected: _addItemLista,
-            textFieldConfiguration: TextFieldConfiguration(
+            textFieldConfiguration: const TextFieldConfiguration(
               decoration: InputDecoration(
                 labelText: 'Categorias',
                 icon: Icon(Icons.category),
               ),
             ),
-            noItemsFoundBuilder: (context) => ListTile(
+            noItemsFoundBuilder: (context) => const ListTile(
               leading: Icon(Icons.add),
               title: Text('Criar categoria'),
 

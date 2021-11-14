@@ -11,15 +11,13 @@ class FormPopUpWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      child: Container(
-        child: Card(
-          margin: EdgeInsets.all(15.0),
-          child: Padding(
-            padding: EdgeInsets.all(4.0),
-            child: SingleChildScrollView(
-              child: Column(
-                children: _fields!,
-              ),
+      child: Card(
+        margin: const EdgeInsets.all(15.0),
+        child: Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: SingleChildScrollView(
+            child: Column(
+              children: _fields!,
             ),
           ),
         ),

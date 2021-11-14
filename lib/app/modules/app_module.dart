@@ -10,8 +10,7 @@ class AppModule extends Module {
     $AppConfigModel,
   ];
 
-  @override
-  Widget get bootstrap => AppWidget();
+  Widget get bootstrap => const AppWidget();
 
   @override
   final List<ModularRoute> routes = [];
