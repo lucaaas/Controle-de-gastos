@@ -1,11 +1,11 @@
 import 'package:controlegastos/app/core/helpers/db_helper.dart';
 import 'package:controlegastos/app/core/models/categoria_model.dart';
-import 'package:controlegastos/app/core/types/MessageType.dart';
+import 'package:controlegastos/app/core/types/message_type.dart';
 
 import 'baseconnector.dart';
 
 class CategoriaConnection extends BaseConnector {
-  DBHelper _dbHelper;
+  final DBHelper _dbHelper;
 
   CategoriaConnection(this._dbHelper);
 
@@ -18,7 +18,7 @@ class CategoriaConnection extends BaseConnector {
     } catch (e, stacktrace) {
       throw Exception(
         MessageType(
-          level: MessageLevel.ERROR,
+          level: MessageLevel.error,
           message: 'Não foi possível recuperar registro de $table: $e',
           data: {'stacktrace': stacktrace},
         ),
@@ -40,7 +40,7 @@ class CategoriaConnection extends BaseConnector {
     } catch (e, stacktrace) {
       throw Exception(
         MessageType(
-          level: MessageLevel.ERROR,
+          level: MessageLevel.error,
           message: 'Não foi possível recuperar registro de $table: $e',
           data: {'stacktrace': stacktrace},
         ),

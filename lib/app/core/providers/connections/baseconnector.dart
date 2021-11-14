@@ -1,6 +1,6 @@
 import 'package:controlegastos/app/core/helpers/db_helper.dart';
 import 'package:controlegastos/app/core/models/basemodel.dart';
-import 'package:controlegastos/app/core/types/MessageType.dart';
+import 'package:controlegastos/app/core/types/message_type.dart';
 
 abstract class BaseConnector {
   /// Saves a [BaseModel] instance into database.
@@ -25,14 +25,14 @@ abstract class BaseConnector {
           await database.insert(table: table, data: model.toJson());
 
       return MessageType(
-        level: MessageLevel.SUCESS,
+        level: MessageLevel.success,
         message: '$table created',
         data: {'id': idInserted},
       );
     } catch (e, stacktrace) {
       throw Exception(
         MessageType(
-          level: MessageLevel.ERROR,
+          level: MessageLevel.error,
           message: 'Não foi possível criar $table: $e',
           data: {'stacktrace': stacktrace},
         ),
@@ -55,14 +55,14 @@ abstract class BaseConnector {
       );
 
       return MessageType(
-        level: MessageLevel.SUCESS,
+        level: MessageLevel.success,
         message: '$table atualizado',
         data: {'rowsAffected': rowsAffected},
       );
     } catch (e, stacktrace) {
       throw Exception(
         MessageType(
-          level: MessageLevel.ERROR,
+          level: MessageLevel.error,
           message: 'Não foi possível atualizar $table: $e',
           data: {'stacktrace': stacktrace},
         ),
@@ -79,14 +79,14 @@ abstract class BaseConnector {
     try {
       int rowsAffected = await database.delete(table, 'id=?', [model.id]);
       return MessageType(
-        level: MessageLevel.SUCESS,
+        level: MessageLevel.success,
         message: 'Registro apagado.',
         data: {'rowsAffected': rowsAffected},
       );
     } catch (e, stacktrace) {
       throw Exception(
         MessageType(
-          level: MessageLevel.ERROR,
+          level: MessageLevel.error,
           message: 'Não foi possível apagar registro: $e',
           data: {'stacktrace': stacktrace},
         ),

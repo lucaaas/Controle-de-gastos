@@ -3,11 +3,11 @@ import 'package:controlegastos/app/core/models/cartao_credito_model.dart';
 import 'package:controlegastos/app/core/models/saida_model.dart';
 import 'package:controlegastos/app/core/providers/connections/baseconnector.dart';
 import 'package:controlegastos/app/core/providers/connections/cartao_credito_connection.dart';
-import 'package:controlegastos/app/core/types/MessageType.dart';
+import 'package:controlegastos/app/core/types/message_type.dart';
 
 class SaidaConnection extends BaseConnector {
-  DBHelper _dbHelper;
-  CartaoCreditoConnection _cartaoCreditoConnection;
+  final DBHelper _dbHelper;
+  final CartaoCreditoConnection _cartaoCreditoConnection;
 
   SaidaConnection(this._dbHelper, this._cartaoCreditoConnection);
 
@@ -26,7 +26,7 @@ class SaidaConnection extends BaseConnector {
     } catch (e, stacktrace) {
       throw Exception(
         MessageType(
-          level: MessageLevel.ERROR,
+          level: MessageLevel.error,
           message: 'Não foi possível recuperar registro de $table: $e',
           data: {'stacktrace': stacktrace},
         ),
@@ -55,7 +55,7 @@ class SaidaConnection extends BaseConnector {
     } catch (e, stacktrace) {
       throw Exception(
         MessageType(
-          level: MessageLevel.ERROR,
+          level: MessageLevel.error,
           message: 'Não foi possível recuperar registro de $table: $e',
           data: {'stacktrace': stacktrace},
         ),

@@ -6,6 +6,9 @@ import 'package:flutter/material.dart';
 import 'new_entrada_controller.dart';
 
 class NewEntradaPage extends StatefulWidget {
+  const NewEntradaPage({Key? key}) : super(key: key);
+
+  @override
   _NewEntradaPageState createState() => _NewEntradaPageState();
 }
 
@@ -14,7 +17,7 @@ class _NewEntradaPageState extends State<NewEntradaPage> {
   final TextEditingController _valor = TextEditingController();
   final TextEditingController _data = TextEditingController();
 
-  final newEntradaController = new NewEntradaController();
+  final newEntradaController = NewEntradaController();
 
   _showDatePicker() async {
     String data = await newEntradaController.openDatePicker(context);
@@ -27,28 +30,28 @@ class _NewEntradaPageState extends State<NewEntradaPage> {
       body: FormPopUpWidget(
         fields: [
           TextField(
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
                 labelText: 'Descrição', icon: Icon(Icons.textsms)),
             controller: _descricao,
           ),
           TextField(
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
                 labelText: 'Valor', icon: Icon(Icons.attach_money)),
             controller: _valor,
           ),
           TextField(
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
                 labelText: 'Data', icon: Icon(Icons.date_range)),
             controller: _data,
             readOnly: true,
             onTap: _showDatePicker,
           ),
-          Selectize(),
+          const Selectize(),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               ElevatedButton(
-                child: Text('Salvar'),
+                child: const Text('Salvar'),
                 onPressed: () => print('salvar'),
               ),
             ],

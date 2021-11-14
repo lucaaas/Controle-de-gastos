@@ -20,5 +20,5 @@ class MessageType {
 
 /// Possibles level message
 enum MessageLevel{
-  INFO, WARNING, ERROR, SUCESS,
+  info, warning, error, success,
 }
