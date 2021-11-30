@@ -1,98 +1,56 @@
 import 'package:controlegastos/app/core/helpers/db_helper.dart';
-import 'package:controlegastos/app/core/models/cartao_credito.dart';
-import 'package:controlegastos/app/core/models/model.dart';
+import 'package:controlegastos/app/core/models/cartao_credito_model.dart';
+import 'package:controlegastos/app/core/types/message_type.dart';
 
-import 'connection.dart';
+import 'baseconnector.dart';
 
-class CartaoCreditoConnection extends Connection {
-  final String tabela = 'entrada';
+class CartaoCreditoConnection extends BaseConnector {
+  final DBHelper _dbHelper;
+
+  CartaoCreditoConnection(this._dbHelper);
 
   @override
-  Future<Mensagem> atualizar(CartaoCredito cartaoCredito) async {
+  Future<CartaoCreditoModel> get(int id) async {
     try {
-      int idCartaoCredito = await DBHelper.update(
-          tabela,
-          {
-            'nome': cartaoCredito.nome,
-            'valor': cartaoCredito.cor,
-          },
-          'id = ?',
-          [cartaoCredito.id]);
-
-      final Mensagem mensagem = new Mensagem(
-        tipo: 'info',
-        mensagem: 'Cartão de crédito atualizado',
-        id: idCartaoCredito,
+      Map<String, dynamic> data =
+          await database.getDataById(table: table, id: id);
+      return CartaoCreditoModel.fromJson(data);
+    } catch (e, stacktrace) {
+      throw Exception(
+        MessageType(
+          level: MessageLevel.error,
+          message: 'Não foi possível recuperar registro de $table: $e',
+          data: {'stacktrace': stacktrace},
+        ),
       );
-
-      return mensagem;
-    } catch (e) {
-      final Mensagem mensagem = new Mensagem(
-        tipo: 'erro',
-        mensagem: 'Não foi possível atualizar cartão de crédito: $e',
-      );
-
-      return mensagem;
     }
   }
 
   @override
-  Future<Mensagem> inserir(CartaoCredito cartaoCredito) async {
+  Future<List<CartaoCreditoModel>> getAll() async {
     try {
-      int idCartaoCredito = await DBHelper.insert(tabela, {
-        'nome': cartaoCredito.nome,
-        'valor': cartaoCredito.cor,
-      });
+      List<Map<String, dynamic>> rows = await database.getData(table: table);
 
-      final Mensagem mensagem = new Mensagem(
-        tipo: 'info',
-        mensagem: 'Novo cartão de crédito inserido',
-        id: idCartaoCredito,
+      List<CartaoCreditoModel> data = [];
+      for (Map<String, dynamic> row in rows) {
+        data.add(CartaoCreditoModel.fromJson(row));
+      }
+
+      return data;
+    } catch (e, stacktrace) {
+      throw Exception(
+        MessageType(
+          level: MessageLevel.error,
+          message: 'Não foi possível recuperar registro de $table: $e',
+          data: {'stacktrace': stacktrace},
+        ),
       );
-
-      return mensagem;
-    } catch (e) {
-      final Mensagem mensagem = new Mensagem(
-        tipo: 'erro',
-        mensagem: 'Não foi possível criar novo cartão de crédito: $e',
-      );
-
-      return mensagem;
     }
   }
 
   @override
-  Future<Mensagem> delete(CartaoCredito cartaoCredito) async {
-    try {
-      int idCartaoCredito =
-          await DBHelper.delete(tabela, 'id = ?', [cartaoCredito.id]);
-
-      final Mensagem mensagem = new Mensagem(
-        tipo: 'info',
-        mensagem: 'Cartão de crédito deletado',
-        id: idCartaoCredito,
-      );
-
-      return mensagem;
-    } catch (e) {
-      final Mensagem mensagem = new Mensagem(
-        tipo: 'erro',
-        mensagem: 'Não foi possível deletar cartão de crédito: $e',
-      );
-
-      return mensagem;
-    }
-  }
+  DBHelper get database => _dbHelper;
 
   @override
-  Future<Model> get(int id) {
-    // TODO: implement get
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<List<Model>> getAll() {
-    // TODO: implement getAll
-    throw UnimplementedError();
-  }
+  String get table => 'entrada';
 }

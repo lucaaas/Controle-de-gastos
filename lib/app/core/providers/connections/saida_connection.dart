@@ -1,101 +1,83 @@
 import 'package:controlegastos/app/core/helpers/db_helper.dart';
-import 'package:controlegastos/app/core/models/model.dart';
-import 'package:controlegastos/app/core/models/saida.dart';
-import 'package:controlegastos/app/core/providers/connections/connection.dart';
+import 'package:controlegastos/app/core/models/cartao_credito_model.dart';
+import 'package:controlegastos/app/core/models/saida_model.dart';
+import 'package:controlegastos/app/core/providers/connections/baseconnector.dart';
+import 'package:controlegastos/app/core/providers/connections/cartao_credito_connection.dart';
+import 'package:controlegastos/app/core/types/message_type.dart';
 
+class SaidaConnection extends BaseConnector {
+  final DBHelper _dbHelper;
+  final CartaoCreditoConnection _cartaoCreditoConnection;
 
-class SaidaConnection extends Connection {
-  final String tabela = 'saida';
+  SaidaConnection(this._dbHelper, this._cartaoCreditoConnection);
 
   @override
-  Future<Mensagem> atualizar(Saida saida) async {
+  Future<SaidaModel> get(int id) async {
     try {
-      int idSaida = await DBHelper.update(
-          tabela,
-          {
-            'descricao': saida.descricao,
-            'valor': saida.valor,
-            'data': saida.data.toString(),
-            'cartao_credito': saida.cartaoCredito!.id,
-          },
-          'id = ?',
-          [saida.id]);
+      Map<String, dynamic> data = await database.getDataById(table: table, id: id);
+      data['categorias'] = _getCategorias(id);
+      SaidaModel saidaModel = SaidaModel.fromJson(data);
 
-      final mensagem = new Mensagem(
-        tipo: 'info',
-        mensagem: 'Saída atualizada',
-        id: idSaida,
+      if (data.containsKey('cartao_credito')) {
+        saidaModel.cartaoCredito = await _getCartaoCredito(data['cartao_credito']);
+      }
+
+      return saidaModel;
+    } catch (e, stacktrace) {
+      throw Exception(
+        MessageType(
+          level: MessageLevel.error,
+          message: 'Não foi possível recuperar registro de $table: $e',
+          data: {'stacktrace': stacktrace},
+        ),
       );
-
-      return mensagem;
-    } catch (e) {
-      final mensagem = new Mensagem(
-        tipo: 'erro',
-        mensagem: 'Não foi possível atualizar nova saída: $e',
-      );
-
-      return mensagem;
     }
   }
 
   @override
-  Future<Mensagem> inserir(Saida saida) async {
+  Future<List<SaidaModel>> getAll() async {
     try {
-      int idSaida = await DBHelper.insert(tabela, {
-        'descricao': saida.descricao,
-        'valor': saida.valor,
-        'data': saida.data.toString(),
-        'cartao_credito': saida.cartaoCredito!.id,
-      });
+      List<Map<String, dynamic>> rows = await database.getData(table: table);
 
-      final mensagem = new Mensagem(
-        tipo: 'info',
-        mensagem: 'Nova saída inserida',
-        id: idSaida,
+      List<SaidaModel> data = [];
+      for (Map<String, dynamic> row in rows) {
+        row['categorias'] = await _getCategorias(row['id']);
+        SaidaModel saidaModel = SaidaModel.fromJson(row);
+
+        if (row.containsKey('cartao_credito')) {
+          saidaModel.cartaoCredito = await _getCartaoCredito(row['cartao_credito']);
+        }
+
+        data.add(saidaModel);
+      }
+
+      return data;
+    } catch (e, stacktrace) {
+      throw Exception(
+        MessageType(
+          level: MessageLevel.error,
+          message: 'Não foi possível recuperar registro de $table: $e',
+          data: {'stacktrace': stacktrace},
+        ),
       );
-
-      return mensagem;
-    } catch (e) {
-      final mensagem = new Mensagem(
-        tipo: 'erro',
-        mensagem: 'Não foi possível criar nova saída: $e',
-      );
-
-      return mensagem;
     }
   }
 
   @override
-  Future<Mensagem> delete(Saida saida) async {
-    try {
-      int idSaida = await DBHelper.delete(tabela, 'id = ?', [saida.id]);
-
-      final mensagem = new Mensagem(
-        tipo: 'info',
-        mensagem: 'Saída deletada',
-        id: idSaida,
-      );
-
-      return mensagem;
-    } catch (e) {
-      final mensagem = new Mensagem(
-        tipo: 'erro',
-        mensagem: 'Não foi possível deletar saída: $e',
-      );
-
-      return mensagem;
-    }
-  }
+  DBHelper get database => _dbHelper;
 
   @override
-  Future<Model> get(int id) {
-    // TODO: implement get
-    throw UnimplementedError();
+  String get table => 'entrada';
+
+  Future<List<Map<String, dynamic>>> _getCategorias(int idSaida) async {
+    return await database.getData(
+      table: 'saida_possui_categoria',
+      where: 'id_entrada = ?',
+      whereArgs: [idSaida],
+    );
   }
 
-  @override
-  Future<List<Model>> getAll() {
-    // TODO: implement getAll
-    throw UnimplementedError();
+  Future<CartaoCreditoModel> _getCartaoCredito(int idCartao) async {
+    return await _cartaoCreditoConnection.get(idCartao);
   }
 }

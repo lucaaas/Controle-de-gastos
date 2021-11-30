@@ -4,15 +4,24 @@ import 'package:controlegastos/app/core/widgets/tag_selectize/tag_selectize_widg
 import 'package:controlegastos/app/core/widgets/text_field/text_field_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:flutter/material.dart';
 
 import 'new_entrada_controller.dart';
 
 class NewEntradaPage extends StatefulWidget {
+  const NewEntradaPage({Key? key}) : super(key: key);
+
+  @override
   _NewEntradaPageState createState() => _NewEntradaPageState();
 }
 
 class _NewEntradaPageState extends State<NewEntradaPage> {
   final NewEntradaController _controller = Modular.get<NewEntradaController>();
+  final TextEditingController _descricao = TextEditingController();
+  final TextEditingController _valor = TextEditingController();
+  final TextEditingController _data = TextEditingController();
+
+  final newEntradaController = NewEntradaController();
 
   @override
   Widget build(BuildContext context) {
@@ -22,43 +31,29 @@ class _NewEntradaPageState extends State<NewEntradaPage> {
       ),
       body: FormPopUpWidget(
         fields: [
-          TextFieldWidget(
-            label: 'Descrição',
-            icon: Icon(Icons.sms),
-            margin: _controller.appConfigModel.margin,
-            controller: _controller.descricao,
+          TextField(
+            decoration: const InputDecoration(
+                labelText: 'Descrição', icon: Icon(Icons.textsms)),
+            controller: _descricao,
           ),
-          TextFieldWidget(
-            label: 'Valor',
-            icon: Icon(Icons.attach_money),
-            controller: _controller.valor,
+          TextField(
+            decoration: const InputDecoration(
+                labelText: 'Valor', icon: Icon(Icons.attach_money)),
+            controller: _valor,
           ),
-          TextFieldWidget(
-            label: 'Data',
-            icon: Icon(Icons.date_range),
-            controller: _controller.data,
+          TextField(
+            decoration: const InputDecoration(
+                labelText: 'Data', icon: Icon(Icons.date_range)),
+            controller: _data,
             readOnly: true,
-            onTap: () => _controller.openDatePicker(context),
+            onTap: _showDatePicker,
           ),
-          TagSelectizeWidget(
-            items: _controller.categorias,
-            itemBuilder: _controller.itemBuilder,
-            buildTag: _controller.buildTag,
-            suggestionsCallback: _controller.suggestionsCallback,
-          ),
+          const Selectize(),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
-              RaisedButton(
-                child: Text('Salvar'),
-                color: Theme
-                    .of(context)
-                    .primaryColor,
-                textColor: Theme
-                    .of(context)
-                    .textTheme
-                    .button!
-                    .color,
+              ElevatedButton(
+                child: const Text('Salvar'),
                 onPressed: () => print('salvar'),
               ),
             ],
