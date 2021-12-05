@@ -1,6 +1,7 @@
 import 'package:controlegastos/app/core/helpers/db_helper.dart';
 import 'package:controlegastos/app/core/models/categoria_model.dart';
 import 'package:controlegastos/app/core/types/message_type.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 import 'baseconnector.dart';
 
@@ -54,3 +55,5 @@ class CategoriaConnection extends BaseConnector {
   @override
   String get table => 'categoria';
 }
+
+final $CategoriaConnection = BindInject((i) => CategoriaConnection(i.get()));

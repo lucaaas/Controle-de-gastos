@@ -1,6 +1,7 @@
 import 'package:controlegastos/app/core/helpers/db_helper.dart';
 import 'package:controlegastos/app/core/models/entrada_model.dart';
 import 'package:controlegastos/app/core/types/message_type.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 import 'baseconnector.dart';
 
@@ -64,3 +65,5 @@ class EntradaConnection extends BaseConnector {
     );
   }
 }
+
+final $EntradaConnection = BindInject((i) => EntradaConnection(i.get()));

@@ -4,6 +4,7 @@ import 'package:controlegastos/app/core/models/saida_model.dart';
 import 'package:controlegastos/app/core/providers/connections/baseconnector.dart';
 import 'package:controlegastos/app/core/providers/connections/cartao_credito_connection.dart';
 import 'package:controlegastos/app/core/types/message_type.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class SaidaConnection extends BaseConnector {
   final DBHelper _dbHelper;
@@ -81,3 +82,5 @@ class SaidaConnection extends BaseConnector {
     return await _cartaoCreditoConnection.get(idCartao);
   }
 }
+
+final $SaidaConnection = BindInject((i) => SaidaConnection(i.get(), i.get()));

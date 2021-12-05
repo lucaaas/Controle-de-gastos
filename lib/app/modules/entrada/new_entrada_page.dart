@@ -1,3 +1,4 @@
+import 'package:controlegastos/app/core/models/categoria.dart';
 import 'package:controlegastos/app/core/widgets/form_popup/form_popup.widget.dart';
 import 'package:controlegastos/app/core/widgets/selectize/selectize.widget.dart';
 import 'package:controlegastos/app/core/widgets/tag_selectize/tag_selectize_widget.dart';
@@ -20,8 +21,6 @@ class _NewEntradaPageState extends State<NewEntradaPage> {
   final TextEditingController _descricao = TextEditingController();
   final TextEditingController _valor = TextEditingController();
   final TextEditingController _data = TextEditingController();
-
-  final newEntradaController = NewEntradaController();
 
   @override
   Widget build(BuildContext context) {
@@ -46,9 +45,13 @@ class _NewEntradaPageState extends State<NewEntradaPage> {
                 labelText: 'Data', icon: Icon(Icons.date_range)),
             controller: _data,
             readOnly: true,
-            onTap: _showDatePicker,
+            onTap: () => _controller.openDatePicker(context),
           ),
-          const Selectize(),
+          SelectizeWidget<Categoria>(
+            itemBuilder: _controller.itemBuilder,
+            suggestionsCallback: _controller.suggestionsCallback,
+            onSuggestionSelected: (Categoria p0) async => print(p0),
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[

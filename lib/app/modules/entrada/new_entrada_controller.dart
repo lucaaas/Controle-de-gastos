@@ -50,6 +50,7 @@ class NewEntradaController {
   }
 
   FutureOr<Iterable<Categoria>> suggestionsCallback(String text) async {
-    return _categoriaConnection.
+    throw UnimplementedError();
+    // return _categoriaConnection.
   }
 }

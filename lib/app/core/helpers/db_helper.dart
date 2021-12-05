@@ -1,3 +1,4 @@
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:path/path.dart' as path;
 import 'package:sqflite/sqflite.dart' as sql;
 import 'package:sqflite/sqflite.dart';
@@ -92,3 +93,5 @@ class DBHelper {
     }, version: 1);
   }
 }
+
+final $DBHelper = BindInject((i) => DBHelper());
