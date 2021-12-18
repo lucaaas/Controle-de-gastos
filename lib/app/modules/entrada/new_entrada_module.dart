@@ -12,11 +12,11 @@ class NewEntradaModule extends Module {
 
   @override
   final List<ModularRoute> routes = [
-    ChildRoute('/', child: (_, args) => NewEntradaPage()),
+    ChildRoute('/', child: (_, args) => const NewEntradaPage()),
   ];
 }
 
 final $NewEntradaController = BindInject(
-      (i) => NewEntradaController(i.get(), i.get()),
+      (i) => NewEntradaController(i.get(), i.get(), i.get()),
   isSingleton: false,
 );
