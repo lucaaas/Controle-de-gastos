@@ -20,13 +20,11 @@ class TagWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: InputChip(
-        label: Text(_text),
-        avatar: _thumbnail,
-        backgroundColor: _color,
-        onDeleted: _onDeleted,
-      ),
+    return InputChip(
+      label: Text(_text),
+      avatar: _thumbnail,
+      backgroundColor: _color,
+      onDeleted: _onDeleted,
     );
   }
 }

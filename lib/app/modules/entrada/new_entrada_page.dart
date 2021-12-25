@@ -1,6 +1,5 @@
-import 'package:controlegastos/app/core/models/categoria_model.dart';
 import 'package:controlegastos/app/core/widgets/form_popup/form_popup.widget.dart';
-import 'package:controlegastos/app/core/widgets/selectize/selectize.widget.dart';
+import 'package:controlegastos/app/modules/categoria_tag_select/categoria_tag_select.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -15,14 +14,9 @@ class NewEntradaPage extends StatefulWidget {
 
 class _NewEntradaPageState extends State<NewEntradaPage> {
   final NewEntradaController _controller = Modular.get<NewEntradaController>();
-  final TextEditingController _descricao = TextEditingController();
-  final TextEditingController _valor = TextEditingController();
-  final TextEditingController _data = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    _controller.insertCategoria();
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Nova Entrada'),
@@ -34,35 +28,31 @@ class _NewEntradaPageState extends State<NewEntradaPage> {
               labelText: 'Descrição',
               icon: Icon(Icons.textsms),
             ),
-            controller: _descricao,
+            controller: _controller.descricao,
           ),
           TextField(
             decoration: const InputDecoration(
               labelText: 'Valor',
               icon: Icon(Icons.attach_money),
             ),
-            controller: _valor,
+            controller: _controller.valor,
           ),
           TextField(
             decoration: const InputDecoration(
               labelText: 'Data',
               icon: Icon(Icons.date_range),
             ),
-            controller: _data,
+            controller: _controller.data,
             readOnly: true,
             onTap: () => _controller.openDatePicker(context),
           ),
-          SelectizeWidget<CategoriaModel>(
-            itemBuilder: _controller.itemBuilder,
-            suggestionsCallback: _controller.suggestionsCallback,
-            onSuggestionSelected: (CategoriaModel p0) async => print(p0),
-          ),
+          CategoriaTagSelect(categorias: _controller.categorias),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               ElevatedButton(
                 child: const Text('Salvar'),
-                onPressed: () => print('salvar'),
+                onPressed: _controller.save,
               ),
             ],
           ),

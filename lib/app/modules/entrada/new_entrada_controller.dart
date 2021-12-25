@@ -5,7 +5,6 @@ import 'package:controlegastos/app/core/models/categoria_model.dart';
 import 'package:controlegastos/app/core/models/entrada_model.dart';
 import 'package:controlegastos/app/core/providers/connections/categoria_connection.dart';
 import 'package:controlegastos/app/core/providers/connections/entrada_connection.dart';
-import 'package:controlegastos/app/core/widgets/tag/tag_widget.dart';
 import 'package:flutter/material.dart';
 
 class NewEntradaController {
@@ -36,25 +35,8 @@ class NewEntradaController {
     }
   }
 
-  Widget itemBuilder(BuildContext context, CategoriaModel categoria) {
-    return ListTile(
-      title: Text(categoria.nome),
-      subtitle: Text(categoria.descricao ?? ''),
-      leading: const Icon(Icons.add),
-    );
-  }
-
-  TagWidget buildTag(CategoriaModel categoria) {
-    return TagWidget(
-      text: categoria.nome,
-      color: Color(categoria.cor.hashCode),
-      onDeleted: () => categorias.remove(categoria),
-    );
-  }
-
-  FutureOr<Iterable<CategoriaModel>> suggestionsCallback(String text) async {
-    List<CategoriaModel> categorias = await _categoriaConnection.getAllByContainsNome(text);
-    return categorias;
+  void save() {
+    print(categorias);
   }
 
   // TODO remover

@@ -12,8 +12,7 @@ class TagListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
+    return Wrap(
       children: [..._tags],
     );
   }
