@@ -17,6 +17,6 @@ class NewEntradaModule extends Module {
 }
 
 final $NewEntradaController = BindInject(
-      (i) => NewEntradaController(i.get(), i.get(), i.get()),
+      (i) => NewEntradaController(i.get(), i.get()),
   isSingleton: false,
 );

@@ -18,6 +18,7 @@ class _NewEntradaPageState extends State<NewEntradaPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _controller.key,
       appBar: AppBar(
         title: const Text('Nova Entrada'),
       ),

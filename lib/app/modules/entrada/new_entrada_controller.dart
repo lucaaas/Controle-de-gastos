@@ -1,14 +1,15 @@
 import 'dart:async';
 
-import 'package:controlegastos/app/core/models/appconfig_model.dart';
+import 'package:controlegastos/app/core/helpers/toast_helper.dart';
 import 'package:controlegastos/app/core/models/categoria_model.dart';
 import 'package:controlegastos/app/core/models/entrada_model.dart';
 import 'package:controlegastos/app/core/providers/connections/categoria_connection.dart';
 import 'package:controlegastos/app/core/providers/connections/entrada_connection.dart';
+import 'package:controlegastos/app/core/types/message_type.dart';
 import 'package:flutter/material.dart';
 
 class NewEntradaController {
-  final AppConfigModel appConfigModel;
+  final GlobalKey<FormState> key = GlobalKey<FormState>();
 
   final List<CategoriaModel> categorias = [];
   final TextEditingController descricao = TextEditingController();
@@ -18,7 +19,7 @@ class NewEntradaController {
   final CategoriaConnection _categoriaConnection;
   final EntradaConnection _entradaConnection;
 
-  NewEntradaController(this.appConfigModel, this._categoriaConnection, this._entradaConnection);
+  NewEntradaController(this._categoriaConnection, this._entradaConnection);
 
   Future<void> openDatePicker(BuildContext context) async {
     DateTime? dataSelecionada = await showDatePicker(
@@ -29,14 +30,29 @@ class NewEntradaController {
     );
 
     if (dataSelecionada != null) {
-      data.text = '${dataSelecionada.day}/${dataSelecionada.month}/${dataSelecionada.year}';
+      data.text = '${dataSelecionada.year}-${dataSelecionada.month}-${dataSelecionada.day}';
     } else {
       data.text = '';
     }
   }
 
-  void save() {
-    print(categorias);
+  void save() async {
+    try {
+      DateTime? dataEntrada = data.text.isNotEmpty ? DateTime.parse(data.text) : null;
+
+      EntradaModel entrada = EntradaModel(
+        descricao: descricao.text,
+        valor: double.parse(valor.text),
+        data: dataEntrada,
+        categorias: categorias.toList(),
+      );
+
+      MessageType message = await _entradaConnection.save(entrada);
+      ToastHelper.show(key.currentContext!, message.message);
+    } catch (e) {
+      MessageType message = e as MessageType;
+      ToastHelper.show(key.currentContext!, message.message);
+    }
   }
 
   // TODO remover

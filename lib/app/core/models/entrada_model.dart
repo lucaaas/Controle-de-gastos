@@ -11,8 +11,8 @@ class EntradaModel extends BaseModel {
     int? id,
     required this.descricao,
     required this.valor,
-    DateTime? data,
-    List<CategoriaModel>? categorias,
+    this.data,
+    this.categorias,
   }) : super(id: id);
 
   EntradaModel.fromJson(Map<String, dynamic> data)
@@ -34,15 +34,7 @@ class EntradaModel extends BaseModel {
       'data': data.toString(),
     };
 
-    if (categorias != null) {
-      List<Map<String, dynamic>> jsonCategorias = [];
-      for (CategoriaModel categoria in categorias!) {
-        jsonCategorias.add(categoria.toJson());
-      }
-
-      json.addAll(super.toJson());
-      json.addAll({'categorias': jsonCategorias});
-    }
+    json.addAll(super.toJson());
 
     return json;
   }

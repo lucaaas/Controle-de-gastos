@@ -1,5 +1,7 @@
 import 'package:controlegastos/app/core/helpers/db_helper.dart';
+import 'package:controlegastos/app/core/models/categoria_model.dart';
 import 'package:controlegastos/app/core/models/entrada_model.dart';
+import 'package:controlegastos/app/core/providers/connections/categoria_connection.dart';
 import 'package:controlegastos/app/core/types/message_type.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -7,8 +9,9 @@ import 'baseconnector.dart';
 
 class EntradaConnection extends BaseConnector {
   final DBHelper _dbHelper;
+  final CategoriaConnection _categoriaConnection;
 
-  EntradaConnection(this._dbHelper);
+  EntradaConnection(this._dbHelper, this._categoriaConnection);
 
   @override
   Future<EntradaModel> get(int id) async {
@@ -52,6 +55,30 @@ class EntradaConnection extends BaseConnector {
   }
 
   @override
+  Future<MessageType> insert(EntradaModel model) async {
+    try {
+      MessageType messageInsert = await super.insert(model);
+      if (messageInsert.level == MessageLevel.success) {
+        for (CategoriaModel categoria in model.categorias ?? []) {
+          saveCategoriaEntrada(categoria.id!, messageInsert.data!['id']);
+        }
+      }
+
+      return messageInsert;
+    } catch (e, stacktrace) {
+      delete(model);
+
+      throw Exception(
+        MessageType(
+          level: MessageLevel.error,
+          message: 'Não foi possível salvar $table: $e',
+          data: {'stacktrace': stacktrace},
+        ),
+      );
+    }
+  }
+
+  @override
   DBHelper get database => _dbHelper;
 
   @override
@@ -64,6 +91,15 @@ class EntradaConnection extends BaseConnector {
       whereArgs: [idEntrada],
     );
   }
+
+  Future<MessageType> saveCategoriaEntrada(int idCategoria, int idEntrada) async {
+    int idInserido = await database.insert(
+      table: 'entrada_possui_categoria',
+      data: {'id_entrada': idEntrada, 'id_categoria': idCategoria},
+    );
+
+    return MessageType(level: MessageLevel.success, message: 'Categoria salva', data: {'id': idInserido});
+  }
 }
 
-final $EntradaConnection = BindInject((i) => EntradaConnection(i.get()));
+final $EntradaConnection = BindInject((i) => EntradaConnection(i.get(), i.get()));
