@@ -30,7 +30,7 @@ class NewEntradaController {
     );
 
     if (dataSelecionada != null) {
-      data.text = '${dataSelecionada.year}-${dataSelecionada.month}-${dataSelecionada.day}';
+      data.text = dataSelecionada.toString().split(' ')[0];
     } else {
       data.text = '';
     }
@@ -42,7 +42,7 @@ class NewEntradaController {
 
       EntradaModel entrada = EntradaModel(
         descricao: descricao.text,
-        valor: double.parse(valor.text),
+        valor: double.parse(valor.text.replaceAll('R\$', '').replaceAll(' ', '')),
         data: dataEntrada,
         categorias: categorias.toList(),
       );

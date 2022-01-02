@@ -1,5 +1,8 @@
+import 'package:controlegastos/app/core/validators/required_validator.dart';
+import 'package:controlegastos/app/core/validators/validator_interface.dart';
 import 'package:controlegastos/app/core/widgets/form_popup/form_popup.widget.dart';
 import 'package:controlegastos/app/modules/categoria_tag_select/categoria_tag_select.dart';
+import 'package:easy_mask/easy_mask.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -24,21 +27,29 @@ class _NewEntradaPageState extends State<NewEntradaPage> {
       ),
       body: FormPopUpWidget(
         fields: [
-          TextField(
+          TextFormField(
             decoration: const InputDecoration(
               labelText: 'Descrição',
               icon: Icon(Icons.textsms),
             ),
             controller: _controller.descricao,
+            validator: (value) => ValidatorInterface.validate(value, [RequiredValidator()]),
+            autovalidateMode: AutovalidateMode.always,
           ),
-          TextField(
+          TextFormField(
             decoration: const InputDecoration(
               labelText: 'Valor',
               icon: Icon(Icons.attach_money),
             ),
             controller: _controller.valor,
+            validator: (value) => ValidatorInterface.validate(value, [RequiredValidator()]),
+            autovalidateMode: AutovalidateMode.always,
+            keyboardType: TextInputType.number,
+            inputFormatters: [
+              TextInputMask(mask: 'R!\$! !9+ 999.99', placeholder: '0', maxPlaceHolders: 0, reverse: true)
+            ],
           ),
-          TextField(
+          TextFormField(
             decoration: const InputDecoration(
               labelText: 'Data',
               icon: Icon(Icons.date_range),
