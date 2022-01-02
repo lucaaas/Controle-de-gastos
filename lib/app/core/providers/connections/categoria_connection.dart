@@ -62,6 +62,7 @@ class CategoriaConnection extends BaseConnector {
         table: table,
         where: 'nome LIKE ?',
         whereArgs: ['%$nome%'],
+        limit: 4,
       );
 
       List<CategoriaModel> data = [];

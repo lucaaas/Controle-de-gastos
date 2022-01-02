@@ -25,12 +25,8 @@ class CategoriaTagSelectController {
   }
 
   FutureOr<Iterable<CategoriaModel>> suggestionsCallback(String text) async {
-    if (text.length >= 3) {
-      List<CategoriaModel> categoriaSuggestions = await _categoriaConnection.getAllByContainsNome(text);
-      return categoriaSuggestions;
-    } else {
-      return [];
-    }
+    List<CategoriaModel> categoriaSuggestions = await _categoriaConnection.getAllByContainsNome(text);
+    return categoriaSuggestions;
   }
 }
 
