@@ -3,12 +3,15 @@ import 'dart:async';
 import 'package:controlegastos/app/core/models/categoria_model.dart';
 import 'package:controlegastos/app/core/providers/connections/categoria_connection.dart';
 import 'package:controlegastos/app/core/widgets/tag_selectize/tag_selectize_widget.dart';
+import 'package:controlegastos/app/modules/categoria/form_categoria/form_categoria_module.dart';
+import 'package:controlegastos/app/modules/categoria/form_categoria/form_categoria_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class CategoriaTagSelectController {
   late List<CategoriaModel> categorias = [];
   final CategoriaConnection _categoriaConnection;
+  late final GlobalKey key;
 
   CategoriaTagSelectController(this._categoriaConnection);
 
@@ -27,6 +30,18 @@ class CategoriaTagSelectController {
   FutureOr<Iterable<CategoriaModel>> suggestionsCallback(String text) async {
     List<CategoriaModel> categoriaSuggestions = await _categoriaConnection.getAllByContainsNome(text);
     return categoriaSuggestions;
+  }
+
+  Widget noItemsFoundBuilder(BuildContext context) {
+    return ListTile(
+      title: const Text('Criar categoria'),
+      leading: const Icon(Icons.add),
+      onTap: _createCategoria,
+    );
+  }
+
+  void _createCategoria() {
+    Modular.to.pushNamed<CategoriaModel>(FormCategoriaModule.URL);
   }
 }
 

@@ -21,11 +21,12 @@ class _NewEntradaPageState extends State<NewEntradaPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _controller.key,
+      // key: _controller.key,
       appBar: AppBar(
         title: const Text('Nova Entrada'),
       ),
       body: FormPopUpWidget(
+        globalKey: _controller.key,
         fields: [
           TextFormField(
             decoration: const InputDecoration(
@@ -58,7 +59,7 @@ class _NewEntradaPageState extends State<NewEntradaPage> {
             readOnly: true,
             onTap: () => _controller.openDatePicker(context),
           ),
-          CategoriaTagSelect(categorias: _controller.categorias),
+          CategoriaTagSelect(categorias: _controller.categorias, globalKey: _controller.key,),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[

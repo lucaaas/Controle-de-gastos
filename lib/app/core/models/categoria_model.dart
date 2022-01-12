@@ -11,8 +11,9 @@ class CategoriaModel extends BaseModel {
     int? id,
     required this.nome,
     this.descricao,
-    this.cor = Colors.white,
-  }) : super(id: id);
+    Color? cor,
+  })  : cor = cor ?? Colors.white,
+        super(id: id);
 
   CategoriaModel.fromJson(Map<String, dynamic> data)
       : nome = data['nome'],
