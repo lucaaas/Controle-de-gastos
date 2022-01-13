@@ -4,12 +4,11 @@ import 'package:controlegastos/app/core/models/categoria_model.dart';
 import 'package:controlegastos/app/core/providers/connections/categoria_connection.dart';
 import 'package:controlegastos/app/core/widgets/tag_selectize/tag_selectize_widget.dart';
 import 'package:controlegastos/app/modules/categoria/form_categoria/form_categoria_module.dart';
-import 'package:controlegastos/app/modules/categoria/form_categoria/form_categoria_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class CategoriaTagSelectController {
-  late List<CategoriaModel> categorias = [];
+  ValueNotifier<List<CategoriaModel>> categorias = ValueNotifier([]);
   final CategoriaConnection _categoriaConnection;
   late final GlobalKey key;
 
@@ -40,8 +39,11 @@ class CategoriaTagSelectController {
     );
   }
 
-  void _createCategoria() {
-    Modular.to.pushNamed<CategoriaModel>(FormCategoriaModule.URL);
+  void _createCategoria() async {
+    CategoriaModel? categoria = await Modular.to.pushNamed<CategoriaModel>(FormCategoriaModule.URL);
+    if (categoria != null) {
+      categorias.value = List.from(categorias.value)..add(categoria);
+    }
   }
 }
 

@@ -33,6 +33,8 @@ class SelectizeWidget<T> extends StatelessWidget {
       suggestionsCallback: _suggestionsCallback,
       noItemsFoundBuilder: _noItemsFoundBuilder,
       hideSuggestionsOnKeyboardHide: false,
+      getImmediateSuggestions: false,
+      minCharsForSuggestions: 3,
       textFieldConfiguration: TextFieldConfiguration(controller: _textEditingController, decoration: _inputDecoration),
     );
   }

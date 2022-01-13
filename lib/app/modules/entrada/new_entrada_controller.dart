@@ -16,10 +16,9 @@ class NewEntradaController {
   final TextEditingController valor = TextEditingController();
   final TextEditingController data = TextEditingController();
 
-  final CategoriaConnection _categoriaConnection;
   final EntradaConnection _entradaConnection;
 
-  NewEntradaController(this._categoriaConnection, this._entradaConnection);
+  NewEntradaController(this._entradaConnection);
 
   Future<void> openDatePicker(BuildContext context) async {
     DateTime? dataSelecionada = await showDatePicker(
@@ -53,13 +52,5 @@ class NewEntradaController {
       MessageType message = e as MessageType;
       ToastHelper.show(key.currentContext!, message.message);
     }
-  }
-
-  // TODO remover
-  void insertCategoria() async {
-    await _categoriaConnection.insert(CategoriaModel(nome: 'Salário'));
-    await _categoriaConnection.insert(CategoriaModel(nome: 'Freela'));
-
-    await _entradaConnection.insert(EntradaModel(descricao: 'Uma entrada', valor: 120));
   }
 }
