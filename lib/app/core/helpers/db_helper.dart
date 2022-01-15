@@ -1,3 +1,4 @@
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:path/path.dart' as path;
 import 'package:sqflite/sqflite.dart' as sql;
 import 'package:sqflite/sqflite.dart';
@@ -20,6 +21,7 @@ class DBHelper {
     List<Object>? whereArgs,
     bool? distinct,
     String? groupBy,
+    int? limit,
     String? orderBy,
   }) async {
     final db = await _database;
@@ -31,6 +33,7 @@ class DBHelper {
       distinct: distinct,
       groupBy: groupBy,
       orderBy: orderBy,
+      limit: limit,
     );
   }
 
@@ -40,11 +43,9 @@ class DBHelper {
   /// ```dart
   ///  Map<String, dynamic> data = await database.getDataById(tableModel, model.id);
   ///  ```
-  Future<Map<String, dynamic>> getDataById(
-      {required String table, required int id}) async {
+  Future<Map<String, dynamic>> getDataById({required String table, required int id}) async {
     final db = await _database;
-    List<Map<String, dynamic>> data =
-        await db.query(table, where: 'id=?', whereArgs: [id]);
+    List<Map<String, dynamic>> data = await db.query(table, where: 'id=?', whereArgs: [id]);
     return data.first;
   }
 
@@ -54,11 +55,9 @@ class DBHelper {
   /// ```dart
   /// int idInserted = await database.insert(tableModel, model.toMap());
   /// ```
-  Future<int> insert(
-      {required String table, required Map<String, dynamic> data}) async {
+  Future<int> insert({required String table, required Map<String, dynamic> data}) async {
     final db = await _database;
-    return await db.insert(table, data,
-        conflictAlgorithm: sql.ConflictAlgorithm.replace);
+    return await db.insert(table, data, conflictAlgorithm: sql.ConflictAlgorithm.replace);
   }
 
   /// Updates the [table] with [data] values that satisfies the [where] condition.
@@ -80,15 +79,18 @@ class DBHelper {
 
   Future<Database> get _database async {
     final dbPath = await sql.getDatabasesPath();
-    return sql.openDatabase(path.join(dbPath, 'financas.db'),
-        onCreate: (db, version) {
-      return db.execute(
-          'CREATE TABLE cartao_credito(id INTEGER PRIMARY KEY NOT NULL, nome TEXT, cor TEXT);'
-          'CREATE TABLE categoria(id INTEGER PRIMARY KEY NOT NULL, nome TEXT, cor TEXT, descricao TEXT);'
-          'CREATE TABLE saida(id INTEGER PRIMARY KEY NOT NULL, descricao TEXT, valor REAL, data TEXT, cartao_credito INTEGER, FOREIGN KEY(cartao_credito) REFERENCES cartao_credito(id));'
-          'CREATE TABLE entrada(id INTEGER PRIMARY KEY NOT NULL, descricao TEXT, valor REAL, data TEXT);'
-          'CREATE TABLE saida_possui_categoria(id_saida INTEGER, id_categoria INTEGER, PRIMARY KEY(id_saida, id_categoria),FOREIGN KEY(id_saida) REFERENCES saida(id), FOREIGN KEY(id_categoria) REFERENCES categoria(id));'
+    return sql.openDatabase(path.join(dbPath, 'financas.db'), onCreate: (db, version) {
+      db.execute('CREATE TABLE cartao_credito(id INTEGER PRIMARY KEY, nome TEXT, cor TEXT);');
+      db.execute('CREATE TABLE categoria(id INTEGER PRIMARY KEY NOT NULL, nome TEXT, cor INTEGER, descricao TEXT);');
+      db.execute(
+          'CREATE TABLE saida(id INTEGER PRIMARY KEY NOT NULL, descricao TEXT, valor REAL, data TEXT, cartao_credito INTEGER, FOREIGN KEY(cartao_credito) REFERENCES cartao_credito(id));');
+      db.execute('CREATE TABLE entrada(id INTEGER PRIMARY KEY NOT NULL, descricao TEXT, valor REAL, data TEXT);');
+      db.execute(
+          'CREATE TABLE saida_possui_categoria(id_saida INTEGER, id_categoria INTEGER, PRIMARY KEY(id_saida, id_categoria),FOREIGN KEY(id_saida) REFERENCES saida(id), FOREIGN KEY(id_categoria) REFERENCES categoria(id));');
+      db.execute(
           'CREATE TABLE entrada_possui_categoria(id_entrada INTEGER, id_categoria INTEGER, PRIMARY KEY(id_entrada, id_categoria),FOREIGN KEY(id_entrada) REFERENCES entrada(id), FOREIGN KEY(id_categoria) REFERENCES categoria(id));');
     }, version: 1);
   }
 }
+
+final $DBHelper = BindInject((i) => DBHelper());

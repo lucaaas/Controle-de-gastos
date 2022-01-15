@@ -1,6 +1,7 @@
 import 'package:controlegastos/app/core/helpers/db_helper.dart';
 import 'package:controlegastos/app/core/models/cartao_credito_model.dart';
 import 'package:controlegastos/app/core/types/message_type.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 import 'baseconnector.dart';
 
@@ -12,8 +13,7 @@ class CartaoCreditoConnection extends BaseConnector {
   @override
   Future<CartaoCreditoModel> get(int id) async {
     try {
-      Map<String, dynamic> data =
-          await database.getDataById(table: table, id: id);
+      Map<String, dynamic> data = await database.getDataById(table: table, id: id);
       return CartaoCreditoModel.fromJson(data);
     } catch (e, stacktrace) {
       throw Exception(
@@ -54,3 +54,5 @@ class CartaoCreditoConnection extends BaseConnector {
   @override
   String get table => 'entrada';
 }
+
+final $CartaoCreditoConnection = BindInject((i) => CartaoCreditoConnection(i.get()));

@@ -19,7 +19,7 @@ abstract class BaseConnector {
   /// Returns a [MessageType] containing the inserted id.
   ///
   /// Throws an exception with a [MessageType]
-  Future<MessageType> insert(BaseModel model) async {
+  Future<MessageType> insert(covariant BaseModel model) async {
     try {
       int idInserted =
           await database.insert(table: table, data: model.toJson());
