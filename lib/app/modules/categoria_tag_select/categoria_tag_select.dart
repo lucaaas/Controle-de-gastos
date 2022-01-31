@@ -6,27 +6,35 @@ import 'package:flutter_modular/flutter_modular.dart';
 
 class CategoriaTagSelect extends StatelessWidget {
   final CategoriaTagSelectController _controller = Modular.get<CategoriaTagSelectController>();
+  final EdgeInsets margin;
 
-  CategoriaTagSelect({Key? key, required GlobalKey globalKey, required List<CategoriaModel> categorias})
-      : super(key: key) {
+  CategoriaTagSelect({
+    Key? key,
+    required GlobalKey globalKey,
+    required List<CategoriaModel> categorias,
+    this.margin = const EdgeInsets.all(10.0),
+  }) : super(key: key) {
     _controller.categorias.value = categorias;
     _controller.key = globalKey;
   }
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-      valueListenable: _controller.categorias,
-      builder: (context, List<CategoriaModel> value, child) => TagSelectizeWidget<CategoriaModel>(
-        key: key,
-        itemBuilder: _controller.itemBuilder,
-        suggestionsCallback: _controller.suggestionsCallback,
-        getInfoTag: _controller.getInfoTags,
-        noItemsFoundBuilder: _controller.noItemsFoundBuilder,
-        items: value,
-        inputDecoration: const InputDecoration(
-          labelText: 'Categorias',
-          icon: Icon(Icons.label),
+    return Container(
+      margin: margin,
+      child: ValueListenableBuilder(
+        valueListenable: _controller.categorias,
+        builder: (context, List<CategoriaModel> value, child) => TagSelectizeWidget<CategoriaModel>(
+          key: key,
+          itemBuilder: _controller.itemBuilder,
+          suggestionsCallback: _controller.suggestionsCallback,
+          getInfoTag: _controller.getInfoTags,
+          noItemsFoundBuilder: _controller.noItemsFoundBuilder,
+          items: value,
+          inputDecoration: const InputDecoration(
+            labelText: 'Categorias',
+            icon: Icon(Icons.label),
+          ),
         ),
       ),
     );

@@ -80,7 +80,7 @@ class DBHelper {
   Future<Database> get _database async {
     final dbPath = await sql.getDatabasesPath();
     return sql.openDatabase(path.join(dbPath, 'financas.db'), onCreate: (db, version) {
-      db.execute('CREATE TABLE cartao_credito(id INTEGER PRIMARY KEY, nome TEXT, cor TEXT);');
+      db.execute('CREATE TABLE cartao_credito(id INTEGER PRIMARY KEY, nome TEXT, cor INTEGER);');
       db.execute('CREATE TABLE categoria(id INTEGER PRIMARY KEY NOT NULL, nome TEXT, cor INTEGER, descricao TEXT);');
       db.execute(
           'CREATE TABLE saida(id INTEGER PRIMARY KEY NOT NULL, descricao TEXT, valor REAL, data TEXT, cartao_credito INTEGER, FOREIGN KEY(cartao_credito) REFERENCES cartao_credito(id));');
