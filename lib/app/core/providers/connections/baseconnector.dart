@@ -26,7 +26,7 @@ abstract class BaseConnector {
 
       return MessageType(
         level: MessageLevel.success,
-        message: '$table created',
+        message: 'Registro de $table salvo',
         data: {'id': idInserted},
       );
     } catch (e, stacktrace) {

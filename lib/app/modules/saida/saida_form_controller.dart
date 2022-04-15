@@ -26,13 +26,14 @@ class SaidaFormController {
 
   void save() async {
     try {
-      DateTime? dataEntrada = data.text.isNotEmpty ? DateTime.parse(data.text) : null;
+      DateTime? dataSaida = DateTime.tryParse(data.text);
 
       SaidaModel saida = SaidaModel(
         descricao: descricao.text,
         valor: double.parse(valor.text.replaceAll('R\$', '').replaceAll(' ', '')),
-        data: dataEntrada,
+        data: dataSaida,
         categorias: categorias.toList(),
+        cartaoCredito: cartaoCredito,
       );
 
       MessageType message = await _connection.save(saida);

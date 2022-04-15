@@ -6,6 +6,7 @@ import 'package:controlegastos/app/core/widgets/text_field/text_field_widget.dar
 import 'package:controlegastos/app/modules/cartao_credito/widgets/select_cartao_credito_widget.dart';
 import 'package:controlegastos/app/modules/categoria_tag_select/categoria_tag_select.dart';
 import 'package:controlegastos/app/modules/saida/saida_form_controller.dart';
+import 'package:easy_mask/easy_mask.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -30,11 +31,18 @@ class SaidaFormPage extends StatelessWidget {
             icon: const Icon(Icons.sms),
             validator: (value) => ValidatorInterface.validate(value, [RequiredValidator()]),
           ),
-          TextFieldWidget(
+          TextFormField(
+            decoration: const InputDecoration(
+              labelText: 'Valor',
+              icon: Icon(Icons.attach_money),
+            ),
             controller: _controller.valor,
-            label: 'Valor',
-            icon: const Icon(Icons.attach_money),
             validator: (value) => ValidatorInterface.validate(value, [RequiredValidator()]),
+            autovalidateMode: AutovalidateMode.always,
+            keyboardType: TextInputType.number,
+            inputFormatters: [
+              TextInputMask(mask: 'R!\$! !9+ 999.99', placeholder: '0', maxPlaceHolders: 0, reverse: true),
+            ],
           ),
           DatePickerWidget(
             textEditingController: _controller.data,
@@ -44,7 +52,9 @@ class SaidaFormPage extends StatelessWidget {
             categorias: _controller.categorias,
             globalKey: _controller.key,
           ),
-          SelectCartaoCreditoWidget(onSelect: _controller.onSelectCartao,),
+          SelectCartaoCreditoWidget(
+            onSelect: _controller.onSelectCartao,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[

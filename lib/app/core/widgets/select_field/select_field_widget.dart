@@ -33,8 +33,10 @@ class SelectFieldWidget<T> extends StatelessWidget {
       builder: (context, T? value, child) => Container(
         margin: margin,
         child: DropdownButtonFormField(
-          icon: icon,
-          decoration: InputDecoration(label: Text(label)),
+          decoration: InputDecoration(
+            label: Text(label),
+            prefixIcon: icon,
+          ),
           items: _items,
           onChanged: _onChanged,
           value: value,
