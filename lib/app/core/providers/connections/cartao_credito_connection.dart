@@ -52,7 +52,7 @@ class CartaoCreditoConnection extends BaseConnector {
   DBHelper get database => _dbHelper;
 
   @override
-  String get table => 'entrada';
+  String get table => 'cartao_credito';
 }
 
 final $CartaoCreditoConnection = BindInject((i) => CartaoCreditoConnection(i.get()));

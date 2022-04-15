@@ -1,5 +1,6 @@
 import 'package:controlegastos/app/core/helpers/db_helper.dart';
 import 'package:controlegastos/app/core/models/cartao_credito_model.dart';
+import 'package:controlegastos/app/core/models/categoria_model.dart';
 import 'package:controlegastos/app/core/models/saida_model.dart';
 import 'package:controlegastos/app/core/providers/connections/baseconnector.dart';
 import 'package:controlegastos/app/core/providers/connections/cartao_credito_connection.dart';
@@ -40,19 +41,21 @@ class SaidaConnection extends BaseConnector {
     try {
       List<Map<String, dynamic>> rows = await database.getData(table: table);
 
-      List<SaidaModel> data = [];
+      List<SaidaModel> saidas = [];
       for (Map<String, dynamic> row in rows) {
-        row['categorias'] = await _getCategorias(row['id']);
-        SaidaModel saidaModel = SaidaModel.fromJson(row);
+        Map<String, dynamic> data = row.map((key, value) => MapEntry(key, value));
 
-        if (row.containsKey('cartao_credito')) {
-          saidaModel.cartaoCredito = await _getCartaoCredito(row['cartao_credito']);
+        data['categorias'] = await _getCategorias(data['id']);
+        SaidaModel saidaModel = SaidaModel.fromJson(data);
+
+        if (data['cartao_credito'] != null) {
+          saidaModel.cartaoCredito = await _getCartaoCredito(data['cartao_credito']);
         }
 
-        data.add(saidaModel);
+        saidas.add(saidaModel);
       }
 
-      return data;
+      return saidas;
     } catch (e, stacktrace) {
       throw Exception(
         MessageType(
@@ -65,17 +68,53 @@ class SaidaConnection extends BaseConnector {
   }
 
   @override
+  Future<MessageType> insert(SaidaModel model) async {
+    try {
+      MessageType messageInsert = await super.insert(model);
+      if (messageInsert.level == MessageLevel.success) {
+        for (CategoriaModel categoria in model.categorias ?? []) {
+          saveCategoria(categoria.id!, messageInsert.data!['id']);
+        }
+      }
+
+      return messageInsert;
+    } catch (e, stacktrace) {
+      delete(model);
+
+      throw Exception(
+        MessageType(
+          level: MessageLevel.error,
+          message: 'Não foi possível salvar $table: $e',
+          data: {'stacktrace': stacktrace},
+        ),
+      );
+    }
+  }
+
+  Future<MessageType> saveCategoria(int idCategoria, int idSaida) async {
+    int idInserido = await database.insert(
+      table: 'saida_possui_categoria',
+      data: {'id_saida': idSaida, 'id_categoria': idCategoria},
+    );
+
+    return MessageType(level: MessageLevel.success, message: 'Categoria salva', data: {'id': idInserido});
+  }
+
+  @override
   DBHelper get database => _dbHelper;
 
   @override
-  String get table => 'entrada';
+  String get table => 'saida';
 
   Future<List<Map<String, dynamic>>> _getCategorias(int idSaida) async {
-    return await database.getData(
-      table: 'saida_possui_categoria',
-      where: 'id_entrada = ?',
+    List<Map<String, dynamic>> categorias = await database.getData(
+      columns: ['categoria.*'],
+      table: 'saida_possui_categoria, categoria',
+      where: 'saida_possui_categoria.id_categoria = categoria.id AND id_saida = ?',
       whereArgs: [idSaida],
     );
+
+    return categorias;
   }
 
   Future<CartaoCreditoModel> _getCartaoCredito(int idCartao) async {

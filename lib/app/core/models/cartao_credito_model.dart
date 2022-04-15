@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'basemodel.dart';
@@ -7,8 +6,12 @@ class CartaoCreditoModel extends BaseModel {
   final String nome;
   final Color cor;
 
-  CartaoCreditoModel({int? id, required this.nome, this.cor = Colors.white})
-      : super(id: id);
+  CartaoCreditoModel({
+    int? id,
+    required this.nome,
+    Color? cor,
+  })  : cor = cor ?? Colors.white,
+        super(id: id);
 
   CartaoCreditoModel.fromJson(Map<String, dynamic> data)
       : nome = data['nome'],
@@ -24,5 +27,10 @@ class CartaoCreditoModel extends BaseModel {
 
     json.addAll(super.toJson());
     return json;
+  }
+
+  @override
+  String toString() {
+    return nome;
   }
 }

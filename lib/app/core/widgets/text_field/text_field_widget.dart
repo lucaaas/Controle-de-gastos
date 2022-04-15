@@ -10,15 +10,17 @@ class TextFieldWidget extends StatelessWidget {
   final EdgeInsetsGeometry _margin;
   final Icon? _icon;
   final void Function()? _onTap;
+  final String? Function(String?)? _validator;
 
   const TextFieldWidget({
     required TextEditingController controller,
     required String label,
     TextInputType textInputType = TextInputType.text,
     List<TextInputFormatter> inputFormatters = const [],
-    EdgeInsetsGeometry margin = const EdgeInsets.all(20.0),
+    EdgeInsetsGeometry margin = const EdgeInsets.all(10.0),
     bool readOnly = false,
     void Function()? onTap,
+    String? Function(String?)? validator,
     Icon? icon,
     Key? key,
   })  : _controller = controller,
@@ -29,13 +31,14 @@ class TextFieldWidget extends StatelessWidget {
         _readOnly = readOnly,
         _onTap = onTap,
         _margin = margin,
+        _validator = validator,
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: _margin,
-      child: TextField(
+      child: TextFormField(
         inputFormatters: _inputFormatters,
         keyboardType: _textInputType,
         controller: _controller,
@@ -45,6 +48,8 @@ class TextFieldWidget extends StatelessWidget {
           labelText: _label,
           icon: _icon,
         ),
+        validator: _validator,
+        autovalidateMode: AutovalidateMode.always,
       ),
     );
   }

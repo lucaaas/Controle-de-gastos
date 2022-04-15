@@ -13,15 +13,15 @@ class SaidaModel extends BaseModel {
     int? id,
     required this.descricao,
     required this.valor,
-    DateTime? data,
-    List<CategoriaModel>? categorias,
-    CartaoCreditoModel? cartaoCredito,
+    this.data,
+    this.categorias,
+    this.cartaoCredito,
   }) : super(id: id);
 
   SaidaModel.fromJson(Map<String, dynamic> data)
       : descricao = data['descricao'],
         valor = data['valor'],
-        data = DateTime.parse(data['data']),
+        data = DateTime.tryParse(''),
         super(id: data['id']) {
     categorias = [];
     for (Map<String, dynamic> categoria in data['categorias']) {
@@ -39,16 +39,10 @@ class SaidaModel extends BaseModel {
       'descricao': descricao,
       'valor': valor,
       'data': data.toString(),
-      'cartaoCredito': cartaoCredito?.toJson(),
+      'cartao_credito': cartaoCredito?.id,
     };
 
-    List<Map<String, dynamic>> jsonCategorias = [];
-    for (CategoriaModel categoria in categorias!) {
-      jsonCategorias.add(categoria.toJson());
-    }
-
     json.addAll(super.toJson());
-    json.addAll({'categorias': jsonCategorias});
     return json;
   }
 }
