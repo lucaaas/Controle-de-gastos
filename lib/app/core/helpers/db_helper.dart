@@ -80,15 +80,17 @@ class DBHelper {
   Future<Database> get _database async {
     final dbPath = await sql.getDatabasesPath();
     return sql.openDatabase(path.join(dbPath, 'financas.db'), onCreate: (db, version) {
-      db.execute('CREATE TABLE cartao_credito(id INTEGER PRIMARY KEY, nome TEXT, cor INTEGER);');
-      db.execute('CREATE TABLE categoria(id INTEGER PRIMARY KEY NOT NULL, nome TEXT, cor INTEGER, descricao TEXT);');
+      db.execute('CREATE TABLE cartao_credito(id INTEGER PRIMARY KEY, nome TEXT, cor INTEGER, createdAt TEXT);');
       db.execute(
-          'CREATE TABLE saida(id INTEGER PRIMARY KEY NOT NULL, descricao TEXT, valor REAL, data TEXT, cartao_credito INTEGER, FOREIGN KEY(cartao_credito) REFERENCES cartao_credito(id));');
-      db.execute('CREATE TABLE entrada(id INTEGER PRIMARY KEY NOT NULL, descricao TEXT, valor REAL, data TEXT);');
+          'CREATE TABLE categoria(id INTEGER PRIMARY KEY NOT NULL, nome TEXT, cor INTEGER, descricao TEXT, createdAt TEXT);');
       db.execute(
-          'CREATE TABLE saida_possui_categoria(id_saida INTEGER, id_categoria INTEGER, PRIMARY KEY(id_saida, id_categoria),FOREIGN KEY(id_saida) REFERENCES saida(id), FOREIGN KEY(id_categoria) REFERENCES categoria(id));');
+          'CREATE TABLE saida(id INTEGER PRIMARY KEY NOT NULL, descricao TEXT, valor REAL, data TEXT, createdAt TEXT,  cartao_credito INTEGER, FOREIGN KEY(cartao_credito) REFERENCES cartao_credito(id));');
       db.execute(
-          'CREATE TABLE entrada_possui_categoria(id_entrada INTEGER, id_categoria INTEGER, PRIMARY KEY(id_entrada, id_categoria),FOREIGN KEY(id_entrada) REFERENCES entrada(id), FOREIGN KEY(id_categoria) REFERENCES categoria(id));');
+          'CREATE TABLE entrada(id INTEGER PRIMARY KEY NOT NULL, descricao TEXT, valor REAL, data TEXT, createdAt TEXT);');
+      db.execute(
+          'CREATE TABLE saida_possui_categoria(id_saida INTEGER, id_categoria INTEGER, createdAt TEXT, PRIMARY KEY(id_saida, id_categoria),FOREIGN KEY(id_saida) REFERENCES saida(id), FOREIGN KEY(id_categoria) REFERENCES categoria(id));');
+      db.execute(
+          'CREATE TABLE entrada_possui_categoria(id_entrada INTEGER, id_categoria INTEGER, createdAt TEXT, PRIMARY KEY(id_entrada, id_categoria),FOREIGN KEY(id_entrada) REFERENCES entrada(id), FOREIGN KEY(id_categoria) REFERENCES categoria(id));');
     }, version: 1);
   }
 }
