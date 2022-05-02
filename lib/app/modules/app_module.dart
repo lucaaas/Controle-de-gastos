@@ -9,6 +9,7 @@ import 'package:controlegastos/app/modules/cartao_credito/cartao_credito_form/ca
 import 'package:controlegastos/app/modules/cartao_credito/widgets/select_cartao_credito_controller.dart';
 import 'package:controlegastos/app/modules/categoria/form_categoria/form_categoria_module.dart';
 import 'package:controlegastos/app/modules/categoria_tag_select/categoria_tag_select_controller.dart';
+import 'package:controlegastos/app/modules/entrada/new_entrada_module.dart';
 import 'package:controlegastos/app/modules/home/home_module.dart';
 import 'package:controlegastos/app/modules/saida/saida_form_module.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -31,6 +32,7 @@ class AppModule extends Module {
   final List<ModularRoute> routes = [
     ModuleRoute(Modular.initialRoute, module: HomeModule()),
     ModuleRoute(FormCategoriaModule.URL, module: FormCategoriaModule()),
+    ModuleRoute(NewEntradaModule.URL, module: NewEntradaModule()),
     ModuleRoute(SaidaFormModule.URL, module: SaidaFormModule()),
     ModuleRoute(CartaoCreditoFormModule.URL, module: CartaoCreditoFormModule()),
   ];
