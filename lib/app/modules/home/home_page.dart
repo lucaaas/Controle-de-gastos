@@ -16,10 +16,13 @@ class HomePage extends StatelessWidget {
         title: const Text('Início'),
       ),
       body: Column(
-        children: const [
-          SaldoWidget(
-            realValue: 120,
-            projectedValue: -10,
+        children: [
+          ValueListenableBuilder(
+            valueListenable: _controller.real_balance,
+            builder: (context, double value, child) => SaldoWidget(
+              realValue: value,
+              projectedValue: -10,
+            ),
           ),
         ],
       ),

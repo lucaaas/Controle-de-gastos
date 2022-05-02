@@ -17,6 +17,6 @@ class HomeModule extends Module {
 }
 
 final $HomeController = BindInject(
-  (i) => HomeController(),
+  (i) => HomeController(i.get(), i.get()),
   isSingleton: false,
 );

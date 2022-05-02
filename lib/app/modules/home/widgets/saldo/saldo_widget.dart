@@ -15,7 +15,7 @@ class SaldoWidget extends StatelessWidget {
     return Row(
       children: [
         _InfoWidget(
-          label: 'Saldo real',
+          label: 'Saldo disponível',
           value: realValue,
         ),
         SizedBox(

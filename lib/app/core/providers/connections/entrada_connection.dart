@@ -31,6 +31,19 @@ class EntradaConnection extends BaseConnector {
     }
   }
 
+  Future<double> getAvailableBalance() async {
+    DateTime now = DateTime.now();
+
+    List<Map<String, dynamic>> result = await database.getData(
+      table: table,
+      columns: ['SUM(valor) AS total'],
+      where: 'data BETWEEN ? AND ?',
+      whereArgs: [DateTime(now.year, now.month, 1).toString(), DateTime(now.year, now.month + 1, 0).toString()],
+    );
+
+    return result[0]['total'] ?? 0.0;
+  }
+
   @override
   Future<List<EntradaModel>> getAll() async {
     try {
