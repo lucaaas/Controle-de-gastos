@@ -1,14 +1,31 @@
+import 'package:controlegastos/app/core/providers/connections/entrada_connection.dart';
+import 'package:controlegastos/app/core/providers/connections/saida_connection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
-class SaldoWidget extends StatelessWidget {
-  final double realValue;
-  final double projectedValue;
+class SaldoWidget extends StatefulWidget {
+  const SaldoWidget({Key? key}) : super(key: key);
 
-  const SaldoWidget({
-    required this.realValue,
-    required this.projectedValue,
-    Key? key,
-  }) : super(key: key);
+  @override
+  State<SaldoWidget> createState() => _SaldoWidgetState();
+}
+
+class _SaldoWidgetState extends State<SaldoWidget> {
+  final EntradaConnection _entradaConnection = Modular.get<EntradaConnection>();
+  final SaidaConnection _saidaConnection = Modular.get<SaidaConnection>();
+
+  late double availableBalance;
+  late double futureBalance;
+
+  @override
+  void initState() {
+    availableBalance = 0;
+    futureBalance = 0;
+
+    _getBalances();
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +33,7 @@ class SaldoWidget extends StatelessWidget {
       children: [
         _InfoWidget(
           label: 'Saldo disponível',
-          value: realValue,
+          value: availableBalance,
         ),
         SizedBox(
           height: 75,
@@ -30,10 +47,31 @@ class SaldoWidget extends StatelessWidget {
         ),
         _InfoWidget(
           label: 'Saldo ao fim do mês',
-          value: projectedValue,
+          value: futureBalance,
         ),
       ],
     );
+  }
+
+  void _getBalances() {
+    _getAvaiableBalance();
+    _getFutureBalance();
+  }
+
+  Future<void> _getAvaiableBalance() async {
+    double totalEntrada = await _entradaConnection.getAvailableBalance();
+    double totalSaida = await _saidaConnection.getAvailableBalance();
+    setState(() {
+      availableBalance = totalEntrada - totalSaida;
+    });
+  }
+
+  Future<void> _getFutureBalance() async {
+    double totalEntrada = await _entradaConnection.getFutureBalance();
+    double totalSaida = await _saidaConnection.getFutureBalance();
+    setState(() {
+      futureBalance = totalEntrada - totalSaida;
+    });
   }
 }
 

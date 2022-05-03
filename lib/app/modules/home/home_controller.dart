@@ -14,13 +14,8 @@ class HomeController {
   }
 
   void _init() {
-    _getBalances();
+
   }
 
-  void _getBalances() async {
-    double totalEntrada = await _entradaConnection.getAvailableBalance();
-    double totalSaida = await _saidaConnection.getAvailableBalance();
 
-    real_balance.value = totalEntrada - totalSaida;
-  }
 }
