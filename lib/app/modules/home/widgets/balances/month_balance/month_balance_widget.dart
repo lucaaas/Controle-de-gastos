@@ -3,14 +3,14 @@ import 'package:controlegastos/app/core/providers/connections/saida_connection.d
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-class SaldoWidget extends StatefulWidget {
-  const SaldoWidget({Key? key}) : super(key: key);
+class MonthBalanceWidget extends StatefulWidget {
+  const MonthBalanceWidget({Key? key}) : super(key: key);
 
   @override
-  State<SaldoWidget> createState() => _SaldoWidgetState();
+  State<MonthBalanceWidget> createState() => _MonthBalanceWidgetState();
 }
 
-class _SaldoWidgetState extends State<SaldoWidget> {
+class _MonthBalanceWidgetState extends State<MonthBalanceWidget> {
   final EntradaConnection _entradaConnection = Modular.get<EntradaConnection>();
   final SaidaConnection _saidaConnection = Modular.get<SaidaConnection>();
 

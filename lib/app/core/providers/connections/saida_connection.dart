@@ -80,6 +80,27 @@ class SaidaConnection extends BaseConnector {
     return result[0]['total'] ?? 0.0;
   }
 
+  Future<Map<CartaoCreditoModel, double>> getCreditCardsBalance() async {
+    DateTime now = DateTime.now();
+
+    List<Map<String, dynamic>> result = await database.getData(
+      table: table,
+      columns: ['cartao_credito, SUM(valor) AS total'],
+      where: 'data BETWEEN ? AND ? AND cartao_credito IS NOT NULL',
+      whereArgs: [DateTime(now.year, now.month, 1).toString(), DateTime(now.year, now.month + 1, 0).toString()],
+      groupBy: 'cartao_credito',
+      orderBy: 'total desc',
+    );
+
+    Map<CartaoCreditoModel, double> creditCardsBalance = {};
+    for (Map<String, dynamic> row in result) {
+      CartaoCreditoModel cartaoCredito = await _cartaoCreditoConnection.get(row['cartao_credito']);
+      creditCardsBalance[cartaoCredito] = row['total'];
+    }
+
+    return creditCardsBalance;
+  }
+
   Future<double> getFutureBalance() async {
     DateTime now = DateTime.now();
 
