@@ -41,19 +41,7 @@ class SaidaConnection extends BaseConnector {
     try {
       List<Map<String, dynamic>> rows = await database.getData(table: table);
 
-      List<SaidaModel> saidas = [];
-      for (Map<String, dynamic> row in rows) {
-        Map<String, dynamic> data = row.map((key, value) => MapEntry(key, value));
-
-        data['categorias'] = await _getCategorias(data['id']);
-        SaidaModel saidaModel = SaidaModel.fromJson(data);
-
-        if (data['cartao_credito'] != null) {
-          saidaModel.cartaoCredito = await _getCartaoCredito(data['cartao_credito']);
-        }
-
-        saidas.add(saidaModel);
-      }
+      List<SaidaModel> saidas = await _mapToModel(rows);
 
       return saidas;
     } catch (e, stacktrace) {
@@ -112,6 +100,40 @@ class SaidaConnection extends BaseConnector {
     );
 
     return result[0]['total'] ?? 0.0;
+  }
+
+  Future<List<SaidaModel>> getLasts() async {
+    DateTime now = DateTime.now();
+
+    List<Map<String, dynamic>> rows = await database.getData(
+      table: table,
+      where: 'data BETWEEN ? AND ? AND cartao_credito IS NULL',
+      whereArgs: [DateTime(now.year, now.month, 1).toString(), DateTime(now.year, now.month + 1, 0).toString()],
+      limit: 3,
+      orderBy: 'data desc'
+    );
+
+    List<SaidaModel> saidas = await _mapToModel(rows);
+
+    return saidas;
+  }
+
+  Future<List<SaidaModel>> _mapToModel(List<Map<String, dynamic>> rows) async {
+    List<SaidaModel> saidas = [];
+    for (Map<String, dynamic> row in rows) {
+      Map<String, dynamic> data = row.map((key, value) => MapEntry(key, value));
+
+      data['categorias'] = await _getCategorias(data['id']);
+      SaidaModel saidaModel = SaidaModel.fromJson(data);
+
+      if (data['cartao_credito'] != null) {
+        saidaModel.cartaoCredito = await _getCartaoCredito(data['cartao_credito']);
+      }
+
+      saidas.add(saidaModel);
+    }
+
+    return saidas;
   }
 
   @override
