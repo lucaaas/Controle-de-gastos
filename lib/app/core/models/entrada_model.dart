@@ -1,41 +1,26 @@
-import 'basemodel.dart';
+import 'package:controlegastos/app/core/models/transaction_model.dart';
+
 import 'categoria_model.dart';
 
-class EntradaModel extends BaseModel {
-  final String descricao;
-  final double valor;
-  DateTime? data;
-  List<CategoriaModel>? categorias;
-
+class EntradaModel extends TransactionModel {
   EntradaModel({
     int? id,
-    required this.descricao,
-    required this.valor,
-    this.data,
-    this.categorias,
-  }) : super(id: id);
+    required String descricao,
+    required double valor,
+    DateTime? data,
+    List<CategoriaModel>? categorias,
+  }) : super(id: id, descricao: descricao, valor: valor, data: data, categorias: categorias);
 
   EntradaModel.fromJson(Map<String, dynamic> data)
-      : descricao = data['descricao'],
-        valor = data['valor'],
-        data = DateTime.parse(data['data']),
-        super(id: data['id']) {
+      : super(
+          descricao: data['descricao'],
+          valor: data['valor'],
+          data: DateTime.parse(data['data']),
+          id: data['id'],
+        ) {
     categorias = [];
     for (Map<String, dynamic> categoria in data['categorias']) {
       categorias!.add(CategoriaModel.fromJson(categoria));
     }
-  }
-
-  @override
-  Map<String, dynamic> toJson() {
-    Map<String, dynamic> json = {
-      'descricao': descricao,
-      'valor': valor,
-      'data': data.toString(),
-    };
-
-    json.addAll(super.toJson());
-
-    return json;
   }
 }
