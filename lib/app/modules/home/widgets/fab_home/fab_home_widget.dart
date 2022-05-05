@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class FabHomeWidget extends StatelessWidget {
-  const FabHomeWidget({Key? key}) : super(key: key);
+  final void Function(String) goToRegister;
+
+  const FabHomeWidget({required this.goToRegister, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,25 +16,15 @@ class FabHomeWidget extends StatelessWidget {
       children: [
         ActionButtonWidget(
           label: 'Entrada',
-          onPressed: () => _goToRegister('entrada'),
+          onPressed: () => goToRegister('entrada'),
           icon: const Icon(Icons.attach_money),
         ),
         ActionButtonWidget(
           label: 'Saída',
-          onPressed: () => _goToRegister('saida'),
+          onPressed: () => goToRegister('saida'),
           icon: const Icon(Icons.money_off),
         ),
       ],
     );
-  }
-
-  void _goToRegister(String type) {
-    switch (type) {
-      case 'entrada':
-        Modular.to.pushNamed(NewEntradaModule.URL);
-        break;
-      case 'saida':
-        Modular.to.pushNamed(SaidaFormModule.URL);
-    }
   }
 }

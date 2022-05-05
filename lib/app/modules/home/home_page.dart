@@ -27,7 +27,7 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
-      floatingActionButton: const FabHomeWidget(),
+      floatingActionButton: FabHomeWidget(goToRegister: _controller.goToRegister),
     );
   }
 }
