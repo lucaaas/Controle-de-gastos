@@ -1,5 +1,6 @@
 import 'package:controlegastos/app/core/models/cartao_credito_model.dart';
 import 'package:controlegastos/app/core/providers/connections/saida_connection.dart';
+import 'package:controlegastos/app/core/widgets/card/card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -27,25 +28,11 @@ class _CreditCardBalanceWidgetState extends State<CreditCardBalanceWidget> {
   @override
   Widget build(BuildContext context) {
     if (creditCardsBalance.isNotEmpty) {
-      return Card(
-        clipBehavior: Clip.antiAlias,
-        elevation: 10,
-        child: Column(
-          children: [
-            const ListTile(
-              leading: Icon(Icons.credit_card),
-              title: Text(
-                'Cartões de crédito',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: _buildCreditCardsList(),
-              ),
-            ),
-          ],
+      return CardWidget(
+        leadingIcon: const Icon(Icons.credit_card),
+        title: 'Cartões de crédito',
+        body: Column(
+          children: _buildCreditCardsList(),
         ),
       );
     } else {
