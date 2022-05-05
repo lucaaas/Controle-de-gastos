@@ -17,12 +17,15 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Início'),
       ),
-      body: ListView(
-        children: const [
-          MonthBalanceWidget(),
-          CreditCardBalanceWidget(),
-          LastTransactionsWidget(),
-        ],
+      body: RefreshIndicator(
+        onRefresh: _controller.refresh,
+        child: ListView(
+          children: const [
+            MonthBalanceWidget(),
+            CreditCardBalanceWidget(),
+            LastTransactionsWidget(),
+          ],
+        ),
       ),
       floatingActionButton: const FabHomeWidget(),
     );

@@ -1,21 +1,14 @@
-import 'package:controlegastos/app/core/providers/connections/entrada_connection.dart';
-import 'package:controlegastos/app/core/providers/connections/saida_connection.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:controlegastos/app/modules/home/home_module.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class HomeController {
-  late final ValueNotifier<double> real_balance = ValueNotifier(0);
-  late final double future_balance;
-
-  final EntradaConnection _entradaConnection;
-  final SaidaConnection _saidaConnection;
-
-  HomeController(this._entradaConnection, this._saidaConnection) {
+  HomeController() {
     _init();
   }
 
-  void _init() {
+  void _init() {}
 
+  Future<void> refresh() async {
+    Modular.to.popAndPushNamed(HomeModule.URL, forRoot: true);
   }
-
-
 }

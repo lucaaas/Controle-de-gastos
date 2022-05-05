@@ -31,6 +31,7 @@ class AppModule extends Module {
   @override
   final List<ModularRoute> routes = [
     ModuleRoute(Modular.initialRoute, module: HomeModule()),
+    ModuleRoute(HomeModule.URL, module: HomeModule()),
     ModuleRoute(FormCategoriaModule.URL, module: FormCategoriaModule()),
     ModuleRoute(NewEntradaModule.URL, module: NewEntradaModule()),
     ModuleRoute(SaidaFormModule.URL, module: SaidaFormModule()),
