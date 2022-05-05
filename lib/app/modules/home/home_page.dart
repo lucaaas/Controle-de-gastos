@@ -17,7 +17,7 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Início'),
       ),
-      body: Column(
+      body: ListView(
         children: const [
           MonthBalanceWidget(),
           CreditCardBalanceWidget(),

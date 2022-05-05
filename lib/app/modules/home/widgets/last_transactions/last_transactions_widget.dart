@@ -1,3 +1,4 @@
+import 'package:controlegastos/app/core/models/entrada_model.dart';
 import 'package:controlegastos/app/core/models/saida_model.dart';
 import 'package:controlegastos/app/core/models/transaction_model.dart';
 import 'package:controlegastos/app/core/providers/connections/entrada_connection.dart';
@@ -18,30 +19,55 @@ class _LastTransactionsWidgetState extends State<LastTransactionsWidget> {
   final EntradaConnection _entradaConnection = Modular.get<EntradaConnection>();
 
   late List<SaidaModel> saidas;
+  late List<EntradaModel> entradas;
 
   @override
   void initState() {
     saidas = [];
-    _getLastSaidas();
+    entradas = [];
+    _getLastTransactions();
 
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return CardWidget(
-      leadingIcon: const Icon(Icons.arrow_upward),
-      title: 'Últimas saídas',
-      body: Column(
-        children: _buildListTile(saidas),
-      ),
+    return Column(
+      children: [
+        CardWidget(
+          leadingIcon: const Icon(Icons.arrow_upward),
+          title: 'Últimas saídas',
+          body: Column(
+            children: _buildListTile(saidas),
+          ),
+        ),
+        CardWidget(
+          leadingIcon: const Icon(Icons.arrow_downward),
+          title: 'Últimas entradas',
+          body: Column(
+            children: _buildListTile(entradas),
+          ),
+        ),
+      ],
     );
+  }
+
+  void _getLastTransactions() async {
+    _getLastSaidas();
+    _getLastEntradas();
   }
 
   void _getLastSaidas() async {
     List<SaidaModel> lastSaidas = await _saidaConnection.getLasts();
     setState(() {
       saidas = lastSaidas;
+    });
+  }
+
+  void _getLastEntradas() async {
+    List<EntradaModel> lastentradas = await _entradaConnection.getLasts();
+    setState(() {
+      entradas = lastentradas;
     });
   }
 
@@ -54,7 +80,7 @@ class _LastTransactionsWidgetState extends State<LastTransactionsWidget> {
           style: ListTileStyle.drawer,
           title: Text(model.descricao),
           trailing: Text('R\$ ${model.valor.toStringAsFixed(2)}'),
-          subtitle: Text(model.data.toString()),
+          subtitle: Text('${model.data!.day}/${model.data!.month}/${model.data!.year}'),
         ),
       );
     }

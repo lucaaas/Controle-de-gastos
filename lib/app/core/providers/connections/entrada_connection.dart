@@ -80,6 +80,21 @@ class EntradaConnection extends BaseConnector {
     return result[0]['total'] ?? 0.0;
   }
 
+  Future<List<EntradaModel>> getLasts() async {
+    DateTime now = DateTime.now();
+
+    List<Map<String, dynamic>> rows = await database.getData(
+        table: table,
+        where: 'data BETWEEN ? AND ?',
+        whereArgs: [DateTime(now.year, now.month, 1).toString(), DateTime(now.year, now.month + 1, 0).toString()],
+        limit: 3,
+        orderBy: 'data desc');
+
+    List<EntradaModel> entradas = await _mapToModel(rows);
+
+    return entradas;
+  }
+
   @override
   Future<MessageType> insert(EntradaModel model) async {
     try {
@@ -125,6 +140,20 @@ class EntradaConnection extends BaseConnector {
     );
 
     return MessageType(level: MessageLevel.success, message: 'Categoria salva', data: {'id': idInserido});
+  }
+
+  Future<List<EntradaModel>> _mapToModel(List<Map<String, dynamic>> rows) async {
+    List<EntradaModel> entradas = [];
+    for (Map<String, dynamic> row in rows) {
+      Map<String, dynamic> data = row.map((key, value) => MapEntry(key, value));
+
+      data['categorias'] = await _getCategorias(data['id']);
+      EntradaModel entradaModel = EntradaModel.fromJson(data);
+
+      entradas.add(entradaModel);
+    }
+
+    return entradas;
   }
 }
 
