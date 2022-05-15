@@ -1,6 +1,6 @@
 import 'package:controlegastos/app/core/validators/required_validator.dart';
 import 'package:controlegastos/app/core/validators/validator_interface.dart';
-import 'package:controlegastos/app/core/widgets/buttons/defult_button.dart';
+import 'package:controlegastos/app/core/widgets/buttons/default/defult_button.dart';
 import 'package:controlegastos/app/core/widgets/color_picker/color_picker_widget.dart';
 import 'package:controlegastos/app/core/widgets/form_popup/form_popup.widget.dart';
 import 'package:controlegastos/app/modules/cartao_credito/cartao_credito_form/cartao_credito_form_controller.dart';
@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class CartaoCreditoFormPage extends StatelessWidget {
-  CartaoCreditoFormController _controller = Modular.get<CartaoCreditoFormController>();
+  final CartaoCreditoFormController _controller = Modular.get<CartaoCreditoFormController>();
 
   CartaoCreditoFormPage({Key? key}) : super(key: key);
 

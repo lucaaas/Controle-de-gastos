@@ -5,6 +5,7 @@ import 'package:controlegastos/app/core/models/saida_model.dart';
 import 'package:controlegastos/app/core/providers/connections/saida_connection.dart';
 import 'package:controlegastos/app/core/types/message_type.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class SaidaFormController {
   final GlobalKey<FormState> key = GlobalKey<FormState>();
@@ -38,6 +39,8 @@ class SaidaFormController {
 
       MessageType message = await _connection.save(saida);
       ToastHelper.show(key.currentContext!, message.message);
+
+      Modular.to.pop();
     } catch (e) {
       MessageType message = e as MessageType;
       ToastHelper.show(key.currentContext!, message.message);

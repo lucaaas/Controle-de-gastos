@@ -1,28 +1,27 @@
-import 'basemodel.dart';
+import 'package:controlegastos/app/core/models/transaction_model.dart';
+
 import 'cartao_credito_model.dart';
 import 'categoria_model.dart';
 
-class SaidaModel extends BaseModel {
-  final String descricao;
-  final double valor;
-  DateTime? data;
-  List<CategoriaModel>? categorias;
+class SaidaModel extends TransactionModel {
   CartaoCreditoModel? cartaoCredito;
 
   SaidaModel({
     int? id,
-    required this.descricao,
-    required this.valor,
-    this.data,
-    this.categorias,
+    required String descricao,
+    required double valor,
+    DateTime? data,
+    List<CategoriaModel>? categorias,
     this.cartaoCredito,
-  }) : super(id: id);
+  }) : super(id: id, descricao: descricao, valor: valor, data: data, categorias: categorias);
 
   SaidaModel.fromJson(Map<String, dynamic> data)
-      : descricao = data['descricao'],
-        valor = data['valor'],
-        data = DateTime.tryParse(''),
-        super(id: data['id']) {
+      : super(
+          descricao: data['descricao'],
+          valor: data['valor'],
+          data: DateTime.parse(data['data']),
+          id: data['id'],
+        ) {
     categorias = [];
     for (Map<String, dynamic> categoria in data['categorias']) {
       categorias!.add(CategoriaModel.fromJson(categoria));
@@ -36,9 +35,6 @@ class SaidaModel extends BaseModel {
   @override
   Map<String, dynamic> toJson() {
     Map<String, dynamic> json = {
-      'descricao': descricao,
-      'valor': valor,
-      'data': data.toString(),
       'cartao_credito': cartaoCredito?.id,
     };
 

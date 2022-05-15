@@ -1,6 +1,6 @@
 import 'package:controlegastos/app/core/validators/required_validator.dart';
 import 'package:controlegastos/app/core/validators/validator_interface.dart';
-import 'package:controlegastos/app/core/widgets/buttons/defult_button.dart';
+import 'package:controlegastos/app/core/widgets/buttons/default/defult_button.dart';
 import 'package:controlegastos/app/core/widgets/color_picker/color_picker_widget.dart';
 import 'package:controlegastos/app/core/widgets/form_popup/form_popup.widget.dart';
 import 'package:controlegastos/app/modules/categoria/form_categoria/form_categoria_controller.dart';
