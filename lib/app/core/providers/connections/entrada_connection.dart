@@ -54,6 +54,17 @@ class EntradaConnection extends BaseConnector {
     }
   }
 
+  Future<List<EntradaModel>> getAllEffectived() async{
+    List<Map<String, dynamic>> rows = await database.getData(
+        table: table,
+        where: 'data is NOT NULL',
+        orderBy: 'data desc');
+
+    List<EntradaModel> entradas = await _mapToModel(rows);
+
+    return entradas;
+  }
+
   Future<double> getAvailableBalance() async {
     DateTime now = DateTime.now();
 

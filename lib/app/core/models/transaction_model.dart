@@ -20,7 +20,7 @@ class TransactionModel extends BaseModel {
     Map<String, dynamic> json = {
       'descricao': descricao,
       'valor': valor,
-      'data': data.toString(),
+      'data': data?.toString(),
     };
 
     json.addAll(super.toJson());

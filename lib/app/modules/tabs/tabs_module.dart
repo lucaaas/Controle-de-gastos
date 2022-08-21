@@ -1,5 +1,5 @@
-import 'package:controlegastos/app/modules/entrada/new_entrada_module.dart';
 import 'package:controlegastos/app/modules/home/home_module.dart';
+import 'package:controlegastos/app/modules/statement/statement_module.dart';
 import 'package:controlegastos/app/modules/tabs/tabs_page.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -9,7 +9,7 @@ class TabsModule extends Module {
   @override
   final List<Bind> binds = [
     $HomeController,
-    $NewEntradaController,
+    $StatementController,
   ];
 
   @override

@@ -55,6 +55,17 @@ class SaidaConnection extends BaseConnector {
     }
   }
 
+  Future<List<SaidaModel>> getAllEffectived() async{
+    List<Map<String, dynamic>> rows = await database.getData(
+        table: table,
+        where: 'data is NOT NULL',
+        orderBy: 'data desc');
+
+    List<SaidaModel> saidas = await _mapToModel(rows);
+
+    return saidas;
+  }
+
   Future<double> getAvailableBalance() async {
     DateTime now = DateTime.now();
 

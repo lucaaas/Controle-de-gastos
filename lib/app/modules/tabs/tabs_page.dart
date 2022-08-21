@@ -1,5 +1,5 @@
-import 'package:controlegastos/app/modules/entrada/new_entrada_page.dart';
 import 'package:controlegastos/app/modules/home/home_page.dart';
+import 'package:controlegastos/app/modules/statement/statement_page.dart';
 import 'package:flutter/material.dart';
 
 class TabsPage extends StatefulWidget {
@@ -12,7 +12,7 @@ class TabsPage extends StatefulWidget {
 class _TabsPageState extends State<TabsPage> {
   final _ListPageInfo _pages = _ListPageInfo([
     _PageInfo(title: 'Início', icon: const Icon(Icons.home), page: HomePage()),
-    _PageInfo(title: 'Extrato', icon: const Icon(Icons.list_alt), page: const NewEntradaPage()),
+    _PageInfo(title: 'Extrato', icon: const Icon(Icons.list_alt), page: const StatementPage()),
   ]);
 
   late String _title;
