@@ -1,5 +1,6 @@
 import 'package:controlegastos/app/core/models/transaction_model.dart';
 import 'package:controlegastos/app/modules/statement/statement_controller.dart';
+import 'package:controlegastos/app/modules/statement/widgets/transaction/transaction_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -12,7 +13,7 @@ class StatementPage extends StatefulWidget {
 
 class _StatementPageState extends State<StatementPage> {
   final StatementController _controller = Modular.get<StatementController>();
-  List<ExpansionTile> _transctions = [];
+  List<TransactionWidget> _transctions = [];
 
   @override
   void initState() {
@@ -32,15 +33,13 @@ class _StatementPageState extends State<StatementPage> {
   void getTilesTransactions() async {
     List<TransactionModel> transactions = await _controller.getTransactions();
 
-    List<ExpansionTile> transactionWidgets = [];
+    List<TransactionWidget> transactionWidgets = [];
     for (TransactionModel transaction in transactions) {
       transactionWidgets.add(
-        ExpansionTile(
-          leading: const CircleAvatar(
-            child: Icon(Icons.money),
-          ),
-          title: Text(transaction.descricao),
-          subtitle: Text(transaction.data.toString()),
+        TransactionWidget(
+          description: transaction.descricao,
+          date: transaction.formattedDate,
+          type: transaction.runtimeType,
         ),
       );
     }

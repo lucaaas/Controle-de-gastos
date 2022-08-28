@@ -27,4 +27,16 @@ class TransactionModel extends BaseModel {
 
     return json;
   }
+
+  String get formattedDate {
+    if (data != null) {
+      String day = data!.day.toString().padLeft(2, '0');
+      String month = data!.month.toString().padLeft(2, '0');
+      String year = data!.year.toString();
+
+      return '$day/$month/$year';
+    } else {
+      return '';
+    }
+  }
 }
