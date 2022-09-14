@@ -40,6 +40,7 @@ class _StatementPageState extends State<StatementPage> {
           description: transaction.descricao,
           date: transaction.formattedDate,
           type: transaction.runtimeType,
+          categories: transaction.categorias,
         ),
       );
     }
