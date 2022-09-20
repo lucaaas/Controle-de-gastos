@@ -4,8 +4,8 @@ import 'package:controlegastos/app/core/models/categoria_model.dart';
 class TransactionModel extends BaseModel {
   final String descricao;
   final double valor;
-  DateTime? data;
   List<CategoriaModel>? categorias;
+  DateTime? data;
 
   TransactionModel({
     int? id,
@@ -39,4 +39,6 @@ class TransactionModel extends BaseModel {
       return '';
     }
   }
+
+  String get formattedValue => 'R\$ $valor';
 }
