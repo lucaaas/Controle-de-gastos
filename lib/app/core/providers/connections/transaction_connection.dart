@@ -1,5 +1,4 @@
 import 'package:controlegastos/app/core/helpers/db_helper.dart';
-import 'package:controlegastos/app/core/models/basemodel.dart';
 import 'package:controlegastos/app/core/models/categoria_model.dart';
 import 'package:controlegastos/app/core/models/transaction_model.dart';
 import 'package:controlegastos/app/core/providers/connections/baseconnector.dart';
@@ -44,11 +43,9 @@ abstract class TransactionConnection extends BaseConnector {
     }
   }
 
-  Future<List<TransactionModel>> getAllEffectived() async{
-    List<Map<String, dynamic>> rows = await database.getData(
-        table: table,
-        where: 'data is NOT NULL',
-        orderBy: 'data desc');
+  Future<List<TransactionModel>> getAllEffectived() async {
+    List<Map<String, dynamic>> rows =
+        await database.getData(table: table, where: 'data is NOT NULL', orderBy: 'data desc');
 
     List<TransactionModel> transactions = await rowsToModels(rows);
 
