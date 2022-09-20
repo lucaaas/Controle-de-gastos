@@ -11,14 +11,14 @@ class StatementController {
   StatementController(this._entradaConnection, this._saidaConnection);
 
   Future<List<TransactionModel>> getTransactions() async {
-    List<EntradaModel> entradas = await _entradaConnection.getAllEffectived();
-    List<SaidaModel> saidas = await _saidaConnection.getAllEffectived();
+    List<TransactionModel> entradas = await _entradaConnection.getAllEffectived();
+    List<TransactionModel> saidas = await _saidaConnection.getAllEffectived();
 
     List<TransactionModel> transactions = _mergeTransactions(entradas, saidas);
     return transactions;
   }
 
-  List<TransactionModel> _mergeTransactions(List<EntradaModel> entradas, List<SaidaModel> saidas) {
+  List<TransactionModel> _mergeTransactions(List<TransactionModel> entradas, List<TransactionModel> saidas) {
     List<TransactionModel> transactions = [];
 
     while (entradas.isNotEmpty || saidas.isNotEmpty) {

@@ -35,14 +35,7 @@ class _StatementPageState extends State<StatementPage> {
 
     List<TransactionWidget> transactionWidgets = [];
     for (TransactionModel transaction in transactions) {
-      transactionWidgets.add(
-        TransactionWidget(
-          description: transaction.descricao,
-          date: transaction.formattedDate,
-          type: transaction.runtimeType,
-          categories: transaction.categorias,
-        ),
-      );
+      transactionWidgets.add(TransactionWidget(transaction: transaction));
     }
 
     setState(() {

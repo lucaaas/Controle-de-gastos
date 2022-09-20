@@ -18,8 +18,8 @@ class _LastTransactionsWidgetState extends State<LastTransactionsWidget> {
   final SaidaConnection _saidaConnection = Modular.get<SaidaConnection>();
   final EntradaConnection _entradaConnection = Modular.get<EntradaConnection>();
 
-  late List<SaidaModel> saidas;
-  late List<EntradaModel> entradas;
+  late List<TransactionModel> saidas;
+  late List<TransactionModel> entradas;
 
   @override
   void initState() {
@@ -58,14 +58,14 @@ class _LastTransactionsWidgetState extends State<LastTransactionsWidget> {
   }
 
   void _getLastSaidas() async {
-    List<SaidaModel> lastSaidas = await _saidaConnection.getLasts();
+    List<TransactionModel> lastSaidas = await _saidaConnection.getLasts();
     setState(() {
       saidas = lastSaidas;
     });
   }
 
   void _getLastEntradas() async {
-    List<EntradaModel> lastentradas = await _entradaConnection.getLasts();
+    List<TransactionModel> lastentradas = await _entradaConnection.getLasts();
     setState(() {
       entradas = lastentradas;
     });
