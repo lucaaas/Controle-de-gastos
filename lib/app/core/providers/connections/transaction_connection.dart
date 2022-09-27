@@ -43,9 +43,12 @@ abstract class TransactionConnection extends BaseConnector {
     }
   }
 
-  Future<List<TransactionModel>> getAllEffectived() async {
-    List<Map<String, dynamic>> rows =
-        await database.getData(table: table, where: 'data is NOT NULL', orderBy: 'data desc');
+  Future<List<TransactionModel>> getAllEffectived(String month) async {
+    List<Map<String, dynamic>> rows = await database.getData(
+      table: table,
+      where: 'data is NOT NULL AND data LIKE "$month%"',
+      orderBy: 'data desc',
+    );
 
     List<TransactionModel> transactions = await rowsToModels(rows);
 
@@ -91,6 +94,25 @@ abstract class TransactionConnection extends BaseConnector {
     List<TransactionModel> transactions = await rowsToModels(rows);
 
     return transactions;
+  }
+
+  Future<List<String>> getTransactionsMonths() async {
+    String filter = 'substr(data, 0, 8)';
+    List<Map<String, dynamic>> rows = await database.getData(
+      table: table,
+      columns: ['$filter as month'],
+      groupBy: filter,
+      orderBy: filter,
+    );
+
+    List<String> months = [];
+    for (Map<String, dynamic> row in rows) {
+      List<String> monthYear = row['month'].split('-');
+
+      months.add('${monthYear[1]}/${monthYear[0]}');
+    }
+
+    return months;
   }
 
   Future<List<Map<String, dynamic>>> getCategorias(int idTransaction) async {

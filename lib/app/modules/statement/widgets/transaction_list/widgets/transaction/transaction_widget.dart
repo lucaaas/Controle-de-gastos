@@ -58,20 +58,9 @@ class TransactionWidget extends StatelessWidget {
 
   Icon get _leading {
     if (transaction.runtimeType == EntradaModel) {
-      return const Icon(
-        Icons.move_to_inbox,
-        color: Colors.green,
-      );
-      // return const CircleAvatar(
-      //   backgroundColor: Colors.green,
-      //   child: Icon(Icons.move_to_inbox),
-      // );
+      return const Icon(Icons.move_to_inbox, color: Colors.green);
     } else {
       return const Icon(Icons.outbox, color: Colors.red);
-      // return const CircleAvatar(
-      //   backgroundColor: Colors.red,
-      //   child: Icon(Icons.outbox),
-      // );
     }
   }
 }

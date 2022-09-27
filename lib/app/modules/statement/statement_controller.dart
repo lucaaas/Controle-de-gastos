@@ -1,5 +1,3 @@
-import 'package:controlegastos/app/core/models/entrada_model.dart';
-import 'package:controlegastos/app/core/models/saida_model.dart';
 import 'package:controlegastos/app/core/models/transaction_model.dart';
 import 'package:controlegastos/app/core/providers/connections/entrada_connection.dart';
 import 'package:controlegastos/app/core/providers/connections/saida_connection.dart';
@@ -10,9 +8,22 @@ class StatementController {
 
   StatementController(this._entradaConnection, this._saidaConnection);
 
-  Future<List<TransactionModel>> getTransactions() async {
-    List<TransactionModel> entradas = await _entradaConnection.getAllEffectived();
-    List<TransactionModel> saidas = await _saidaConnection.getAllEffectived();
+  Future<List<String>> getMonths() async {
+    List<String> entradaMonths = await _entradaConnection.getTransactionsMonths();
+    List<String> saidaMonths = await _saidaConnection.getTransactionsMonths();
+
+    List<String> months = [...{...entradaMonths, ...saidaMonths}]; // ...{} removes duplicates
+    months.sort();
+
+    return months;
+  }
+
+  Future<List<TransactionModel>> getTransactions(String month) async {
+    List<String> monthYear = month.split('/');
+    String formattedMonth = '${monthYear[1]}-${monthYear[0]}';
+
+    List<TransactionModel> entradas = await _entradaConnection.getAllEffectived(formattedMonth);
+    List<TransactionModel> saidas = await _saidaConnection.getAllEffectived(formattedMonth);
 
     List<TransactionModel> transactions = _mergeTransactions(entradas, saidas);
     return transactions;
