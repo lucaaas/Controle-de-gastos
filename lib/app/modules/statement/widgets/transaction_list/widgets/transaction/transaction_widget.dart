@@ -16,27 +16,24 @@ class TransactionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-      child: CardWidget(
-        isThreeLine: true,
-        title: transaction.descricao,
-        leadingIcon: _leading,
-        subtitle: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              transaction.formattedValue,
-              style: const TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-              ),
+    return CardWidget(
+      isThreeLine: true,
+      title: transaction.descricao,
+      leadingIcon: _leading,
+      subtitle: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            transaction.formattedValue,
+            style: const TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
             ),
-            Text(transaction.formattedDate),
-            TagListWidget(tags: _categoryTags),
-          ],
-        ),
+          ),
+          Text(transaction.formattedDate),
+          TagListWidget(tags: _categoryTags),
+        ],
       ),
     );
   }

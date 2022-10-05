@@ -23,15 +23,7 @@ class CardWidget extends StatelessWidget {
       elevation: 10,
       child: Column(
         children: [
-          ListTile(
-            leading: leadingIcon,
-            isThreeLine: isThreeLine,
-            title: Text(
-              title ?? '',
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-            ),
-            subtitle: subtitle,
-          ),
+          _getTitle(),
           Padding(
             padding: EdgeInsets.all(body != null ? 16.0 : 0.0),
             child: body,
@@ -39,6 +31,21 @@ class CardWidget extends StatelessWidget {
         ],
       ),
     );
-    ;
+  }
+
+  Widget _getTitle() {
+    if (title != null) {
+      return ListTile(
+        leading: leadingIcon,
+        isThreeLine: isThreeLine,
+        title: Text(
+          title!,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+        ),
+        subtitle: subtitle,
+      );
+    } else {
+      return Container();
+    }
   }
 }
