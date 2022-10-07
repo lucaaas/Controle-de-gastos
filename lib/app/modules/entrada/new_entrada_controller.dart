@@ -3,6 +3,7 @@ import 'package:controlegastos/app/core/models/categoria_model.dart';
 import 'package:controlegastos/app/core/models/entrada_model.dart';
 import 'package:controlegastos/app/core/providers/connections/entrada_connection.dart';
 import 'package:controlegastos/app/core/types/message_type.dart';
+import 'package:controlegastos/app/modules/tabs/tabs_module.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -32,7 +33,7 @@ class NewEntradaController {
       MessageType message = await _entradaConnection.save(entrada);
       ToastHelper.show(key.currentContext!, message.message);
 
-      Modular.to.pop();
+      Modular.to.pushReplacementNamed(TabsModule.URL);
     } catch (e) {
       MessageType message = e as MessageType;
       ToastHelper.show(key.currentContext!, message.message);

@@ -4,8 +4,8 @@ import 'package:controlegastos/app/core/models/categoria_model.dart';
 class TransactionModel extends BaseModel {
   final String descricao;
   final double valor;
-  DateTime? data;
   List<CategoriaModel>? categorias;
+  DateTime? data;
 
   TransactionModel({
     int? id,
@@ -20,11 +20,25 @@ class TransactionModel extends BaseModel {
     Map<String, dynamic> json = {
       'descricao': descricao,
       'valor': valor,
-      'data': data.toString(),
+      'data': data?.toString(),
     };
 
     json.addAll(super.toJson());
 
     return json;
   }
+
+  String get formattedDate {
+    if (data != null) {
+      String day = data!.day.toString().padLeft(2, '0');
+      String month = data!.month.toString().padLeft(2, '0');
+      String year = data!.year.toString();
+
+      return '$day/$month/$year';
+    } else {
+      return '';
+    }
+  }
+
+  String get formattedValue => 'R\$ $valor';
 }

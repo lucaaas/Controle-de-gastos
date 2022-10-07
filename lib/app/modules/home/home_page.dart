@@ -14,9 +14,6 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Início'),
-      ),
       body: RefreshIndicator(
         onRefresh: _controller.refresh,
         child: ListView(

@@ -12,6 +12,7 @@ import 'package:controlegastos/app/modules/categoria_tag_select/categoria_tag_se
 import 'package:controlegastos/app/modules/entrada/new_entrada_module.dart';
 import 'package:controlegastos/app/modules/home/home_module.dart';
 import 'package:controlegastos/app/modules/saida/saida_form_module.dart';
+import 'package:controlegastos/app/modules/tabs/tabs_module.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class AppModule extends Module {
@@ -30,7 +31,8 @@ class AppModule extends Module {
 
   @override
   final List<ModularRoute> routes = [
-    ModuleRoute(Modular.initialRoute, module: HomeModule()),
+    ModuleRoute(Modular.initialRoute, module: TabsModule()),
+    ModuleRoute(TabsModule.URL, module: TabsModule()),
     ModuleRoute(HomeModule.URL, module: HomeModule()),
     ModuleRoute(FormCategoriaModule.URL, module: FormCategoriaModule()),
     ModuleRoute(NewEntradaModule.URL, module: NewEntradaModule()),
