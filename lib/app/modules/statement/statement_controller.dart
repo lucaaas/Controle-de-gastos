@@ -1,3 +1,4 @@
+import 'package:controlegastos/app/core/models/entrada_model.dart';
 import 'package:controlegastos/app/core/models/transaction_model.dart';
 import 'package:controlegastos/app/core/providers/connections/entrada_connection.dart';
 import 'package:controlegastos/app/core/providers/connections/saida_connection.dart';
@@ -12,7 +13,9 @@ class StatementController {
     List<String> entradaMonths = await _entradaConnection.getTransactionsMonths();
     List<String> saidaMonths = await _saidaConnection.getTransactionsMonths();
 
-    List<String> months = [...{...entradaMonths, ...saidaMonths}]; // ...{} removes duplicates
+    List<String> months = [
+      ...{...entradaMonths, ...saidaMonths}
+    ]; // ...{} removes duplicates
     months.sort();
 
     return months;
@@ -25,7 +28,20 @@ class StatementController {
     List<TransactionModel> entradas = await _entradaConnection.getAllEffectived(formattedMonth);
     List<TransactionModel> saidas = await _saidaConnection.getAllEffectived(formattedMonth);
 
+    DateTime date = DateTime(int.parse(monthYear[1]), int.parse(monthYear[0]));
+    DateTime previousMonth = date.subtract(const Duration(days: 1));
     List<TransactionModel> transactions = _mergeTransactions(entradas, saidas);
+
+    double previousMonthBalance = await _entradaConnection.getAvailableBalance(month: previousMonth);
+    transactions.insert(0,
+      EntradaModel(
+        descricao: 'Saldo mês anterior',
+        valor: previousMonthBalance,
+        data: previousMonth,
+        categorias: [],
+      ),
+    );
+
     return transactions;
   }
 

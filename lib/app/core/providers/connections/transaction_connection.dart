@@ -55,27 +55,28 @@ abstract class TransactionConnection extends BaseConnector {
     return transactions;
   }
 
-  Future<double> getAvailableBalance() async {
-    DateTime now = DateTime.now();
+  Future<double> getAvailableBalance({DateTime? month}) async {
+    late DateTime date;
+    if (month != null) {
+      date = month;
+    } else {
+      date = DateTime.now();
+    }
 
     List<Map<String, dynamic>> result = await database.getData(
       table: table,
       columns: ['SUM(valor) AS total'],
       where: 'data BETWEEN ? AND ?',
-      whereArgs: [DateTime(now.year, now.month, 1).toString(), DateTime(now.year, now.month + 1, 0).toString()],
+      whereArgs: [DateTime(date.year, date.month, 1).toString(), DateTime(date.year, date.month + 1, 0).toString()],
     );
 
     return result[0]['total'] ?? 0.0;
   }
 
   Future<double> getFutureBalance() async {
-    DateTime now = DateTime.now();
-
     List<Map<String, dynamic>> result = await database.getData(
       table: table,
       columns: ['SUM(valor) AS total'],
-      where: 'createdAt BETWEEN ? AND ?',
-      whereArgs: [DateTime(now.year, now.month, 1).toString(), DateTime(now.year, now.month + 1, 0).toString()],
     );
 
     return result[0]['total'] ?? 0.0;
