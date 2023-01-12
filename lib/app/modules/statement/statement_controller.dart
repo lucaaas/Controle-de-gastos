@@ -27,22 +27,30 @@ class StatementController {
 
     List<TransactionModel> entradas = await _entradaConnection.getAllEffectived(formattedMonth);
     List<TransactionModel> saidas = await _saidaConnection.getAllEffectived(formattedMonth);
-
-    DateTime date = DateTime(int.parse(monthYear[1]), int.parse(monthYear[0]));
-    DateTime previousMonth = date.subtract(const Duration(days: 1));
     List<TransactionModel> transactions = _mergeTransactions(entradas, saidas);
 
-    double previousMonthBalance = await _entradaConnection.getAvailableBalance(month: previousMonth);
-    transactions.insert(0,
-      EntradaModel(
-        descricao: 'Saldo mês anterior',
-        valor: previousMonthBalance,
-        data: previousMonth,
-        categorias: [],
-      ),
-    );
+    EntradaModel previousBalance = await _getPreviousMonthBalance(int.parse(monthYear[0]), int.parse(monthYear[1]));
+    transactions.insert(0, previousBalance);
 
     return transactions;
+  }
+
+  Future<EntradaModel> _getPreviousMonthBalance(int month, int year) async {
+    DateTime date = DateTime(year, month);
+    DateTime previousMonth = date.subtract(const Duration(days: 1));
+
+    double previousEntrada = await _entradaConnection.getTotal(month: previousMonth);
+    double previousSaida = await _saidaConnection.getTotal(month: previousMonth);
+    double previousMonthBalance = previousEntrada - previousSaida;
+
+    EntradaModel previousEntradaBalance = EntradaModel(
+      descricao: 'Saldo mês anterior',
+      valor: previousMonthBalance,
+      data: previousMonth,
+      categorias: [],
+    );
+
+    return previousEntradaBalance;
   }
 
   List<TransactionModel> _mergeTransactions(List<TransactionModel> entradas, List<TransactionModel> saidas) {

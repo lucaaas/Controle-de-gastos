@@ -59,8 +59,9 @@ class _MonthBalanceWidgetState extends State<MonthBalanceWidget> {
   }
 
   Future<void> _getAvaiableBalance() async {
-    double totalEntrada = await _entradaConnection.getAvailableBalance();
-    double totalSaida = await _saidaConnection.getAvailableBalance();
+    double totalEntrada = await _entradaConnection.getTotal();
+    double totalSaida = await _saidaConnection.getTotal();
+
     setState(() {
       availableBalance = totalEntrada - totalSaida;
     });
